@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="transparent">#00000000</color>
+    <color name="gray">#FF7D7878</color>
+    <color name="item_backGround">#363636</color> <!--#FF7D7878-->
+    <color name="item_backGround_day">#9AD2F9</color>
+    <color name="black">#ff000000</color>
+    <color name="white">#ffffffff</color>
+    <color name="light_white">#CCCCCC</color>
+    <color name="alpha_gray">#80888888</color>
+    <color name="light_gray">#888888</color>
+    <color name="glass_gray">#EE303030</color>
+    <color name="dark_gray">#232323</color>
+    <color name="mdark_gray">#303030</color>
+    <color name="light_gray_alpha">#22888888</color>
+    <color name="search_gray">#555555</color>
+    <color name="red">#ff0000</color>
+    <color name="light_blue">#00E5EE</color>
+    <color name="rect">#FFF456</color>
+    <color name="half_seekbar_select_color">#12F7EC</color>
+    <color name="half_seekbar_bg_color">#DAF9F8</color>
+    <color name="weather_color">#ffffff</color>
+    <color name="mistyrose">#ffe4e1</color>
+    <color name="lightpink">#ffb6c1</color>
+    <color name="violet">#ee82ee</color>
+    <color name="tomato">#ff6347</color>
+    <color name="green">#B325CB55</color>
+    <color name="btn_white">#33D9D7D7</color>
+    <color name="white_alpha">#88FFFFFF</color>
+    <color name="volume_color">#009ACD</color>
+    <color name="volume_color_bg">#001321</color>
+
+    <color name="waveform_selected">#33b5e5</color>
+    <color name="waveform_unselected">#195a72</color>
+    <color name="waveform_unselected_bkgnd_overlay">#a90a242d</color>
+    <color name="selection_border">#ffffff</color>
+    <color name="playback_indicator">#ffff66</color>
+    <color name="grid_line">#66cccccc</color>
+    <color name="timecode">#ddffffdd</color>
+    <color name="timecode_shadow">#aa000000</color>
+</resources>

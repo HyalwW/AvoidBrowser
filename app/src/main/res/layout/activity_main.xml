@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyaline.avoidbrowser.ui.activities.main.MainViewModel" />
+    </data>
+
+    <com.qmuiteam.qmui.layout.QMUIConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.activities.main.MainActivity">
+
+        <com.qmuiteam.qmui.layout.QMUILinearLayout
+            android:id="@+id/search_panel"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@color/volume_color"
+            android:weightSum="6"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.qmuiteam.qmui.layout.QMUILinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5">
+
+                <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </com.qmuiteam.qmui.layout.QMUILinearLayout>
+
+
+        </com.qmuiteam.qmui.layout.QMUILinearLayout>
+
+        <com.qmuiteam.qmui.layout.QMUIFrameLayout
+            android:id="@+id/web_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/bottom_panel"
+            app:layout_constraintTop_toBottomOf="@id/search_panel" />
+
+        <com.qmuiteam.qmui.layout.QMUILinearLayout
+            android:id="@+id/bottom_panel"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:weightSum="5"
+            android:background="@color/volume_color"
+            app:layout_constraintBottom_toBottomOf="parent">
+            <com.qmuiteam.qmui.layout.QMUIButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </com.qmuiteam.qmui.layout.QMUILinearLayout>
+    </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
+</layout>
