@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyaline.avoidbrowser.ui.activities.main.MainViewModel" />
+    </data>
+
+    <com.qmuiteam.qmui.layout.QMUILinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/volume_color"
+        android:weightSum="5">
+
+        <include
+            layout="@layout/bottom_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:item="@{viewModel.items.get(0)}"
+            app:viewModel="@{viewModel}" />
+
+        <include
+            layout="@layout/bottom_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:item="@{viewModel.items.get(1)}"
+            app:viewModel="@{viewModel}" />
+
+        <include
+            layout="@layout/bottom_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:item="@{viewModel.items.get(2)}"
+            app:viewModel="@{viewModel}" />
+
+        <include
+            layout="@layout/bottom_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:item="@{viewModel.items.get(3)}"
+            app:viewModel="@{viewModel}" />
+
+        <include
+            layout="@layout/bottom_button"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:item="@{viewModel.items.get(4)}"
+            app:viewModel="@{viewModel}" />
+    </com.qmuiteam.qmui.layout.QMUILinearLayout>
+</layout>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyaline.avoidbrowser.ui.activities.main.MainViewModel" />
+
+        <variable
+            name="item"
+            type="com.hyaline.avoidbrowser.ui.activities.main.BottomItem" />
+    </data>
+
+    <com.qmuiteam.qmui.layout.QMUIFrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bottom_item_bg"
+        android:clickable="true"
+        android:focusable="true"
+        app:clickCommand="@{viewModel.onBottomItemCLick}"
+        app:clickData="@{item}">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            app:imgRes="@{item.imgRes}" />
+    </com.qmuiteam.qmui.layout.QMUIFrameLayout>
+</layout>

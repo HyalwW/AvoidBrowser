@@ -16,6 +16,8 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.hyaline.avoidbrowser.utils.ThreadPool;
+
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
@@ -59,7 +61,7 @@ public abstract class BaseSurfaceView extends SurfaceView implements SurfaceHold
         holder.addCallback(this);
 
         builder = new MsgBuilder();
-        threadPool = Executors.newCachedThreadPool();
+        threadPool = ThreadPool.cache();
         onInit();
     }
 

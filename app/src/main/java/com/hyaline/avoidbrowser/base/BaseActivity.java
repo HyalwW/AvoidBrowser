@@ -26,6 +26,8 @@ public abstract class BaseActivity<VM extends BaseViewModel, DB extends ViewData
     protected int widthPixels, heightPixels;
     protected int statusBarHeight, navigationBarHeight;
 
+    private OnBackHandler backHandler;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,11 +37,22 @@ public abstract class BaseActivity<VM extends BaseViewModel, DB extends ViewData
         widthPixels = outMetrics.widthPixels;
         heightPixels = outMetrics.heightPixels;
         initViewModel();
-        QMUIStatusBarHelper.translucent(this);
+//        QMUIStatusBarHelper.translucent(this);
         statusBarHeight = getStatusHeight();
         navigationBarHeight = getNavBarHeight();
         initData();
         initView();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backHandler == null || !backHandler.onBackPressed()) {
+            super.onBackPressed();
+        }
+    }
+
+    public void setBackHandler(OnBackHandler backHandler) {
+        this.backHandler = backHandler;
     }
 
     private void initViewModel() {

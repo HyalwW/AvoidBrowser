@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyaline.avoidbrowser.ui.activities.main.MainViewModel" />
+    </data>
+
+    <com.qmuiteam.qmui.layout.QMUIConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/volume_color">
+
+        <com.qmuiteam.qmui.layout.QMUILinearLayout
+            android:id="@+id/search_layout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:background="@drawable/search_layout_bg"
+            android:weightSum="6"
+            app:clickCommand="@{viewModel.onSearchClick}"
+            app:layout_constraintEnd_toStartOf="@id/ref"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:text="@{viewModel.searchText}"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:padding="10dp"
+                app:clickCommand="@{viewModel.onCollectClick}"
+                app:imgRes="@{viewModel.collectRes}" />
+        </com.qmuiteam.qmui.layout.QMUILinearLayout>
+
+        <ImageView
+            android:id="@+id/ref"
+            android:layout_width="36dp"
+            android:layout_height="50dp"
+            android:padding="8dp"
+            app:clickCommand="@{viewModel.onRefreshClick}"
+            app:imgRes="@{viewModel.refreshRes}"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
+</layout>

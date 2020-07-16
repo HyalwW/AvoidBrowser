@@ -51,7 +51,7 @@ dependencies {
     implementation "com.qmuiteam:arch:$version"
     annotationProcessor "com.qmuiteam:arch-compiler:$version"
 
-    api 'com.tencent.tbs.tbssdk:sdk:43697'
+    implementation 'com.tencent.tbs.tbssdk:sdk:43903'
 
     implementation 'com.google.android.material:material:1.1.0'
 

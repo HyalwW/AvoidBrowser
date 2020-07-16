@@ -1,6 +1,7 @@
 package com.hyaline.avoidbrowser.utils;
 
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
@@ -21,5 +22,10 @@ public class BindingUtils {
                 }
             }
         });
+    }
+
+    @BindingAdapter(value = {"imgRes"})
+    public static void setImageRes(ImageView view, int res) {
+        view.setImageResource(res);
     }
 }
