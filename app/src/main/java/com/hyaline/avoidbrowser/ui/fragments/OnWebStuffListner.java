@@ -5,8 +5,10 @@ package com.hyaline.avoidbrowser.ui.fragments;
  * Date: 2020/7/16
  * Description: blablabla
  */
-public interface OnLoadListner {
+public interface OnWebStuffListner {
     void onLoadStart();
 
     void onLoadFinish();
+
+    void onWebScrollChanged(int xOffset, int yOffset);
 }

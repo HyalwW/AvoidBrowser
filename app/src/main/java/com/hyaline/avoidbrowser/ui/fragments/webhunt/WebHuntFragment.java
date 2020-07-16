@@ -17,7 +17,7 @@ import com.hyaline.avoidbrowser.R;
 import com.hyaline.avoidbrowser.base.BaseFragment;
 import com.hyaline.avoidbrowser.databinding.FragmentWebHuntBinding;
 import com.hyaline.avoidbrowser.ui.customviews.LoadingView;
-import com.hyaline.avoidbrowser.ui.fragments.OnLoadListner;
+import com.hyaline.avoidbrowser.ui.fragments.OnWebStuffListner;
 import com.qmuiteam.qmui.util.QMUIDirection;
 import com.qmuiteam.qmui.util.QMUIViewHelper;
 import com.tencent.smtt.sdk.WebSettings;
@@ -34,7 +34,7 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
     private WebView webView;
     private WebViewClient client;
     private boolean clearHistory, isRedirect;
-    private OnLoadListner loadListner;
+    private OnWebStuffListner loadListner;
 
     @Override
     protected int layoutId() {
@@ -49,8 +49,8 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getActivity() instanceof OnLoadListner) {
-            loadListner = (OnLoadListner) getActivity();
+        if (getActivity() instanceof OnWebStuffListner) {
+            loadListner = (OnWebStuffListner) getActivity();
         }
     }
 
@@ -105,6 +105,11 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
         webView = new WebView(getActivity());
         ViewGroup.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         dataBinding.base.addView(webView, 0, params);
+        webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (loadListner != null) {
+                loadListner.onWebScrollChanged(scrollX - oldScrollX, scrollY - oldScrollY);
+            }
+        });
     }
 
     private void initClient() {

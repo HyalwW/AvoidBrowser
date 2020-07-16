@@ -1,5 +1,6 @@
 package com.hyaline.avoidbrowser.ui.activities.main;
 
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,13 +15,14 @@ import com.hyaline.avoidbrowser.base.BaseActivity;
 import com.hyaline.avoidbrowser.databinding.ActivityMainBinding;
 import com.hyaline.avoidbrowser.ui.activities.search.SearchActivity;
 import com.hyaline.avoidbrowser.ui.activities.set.SettingActivity;
-import com.hyaline.avoidbrowser.ui.fragments.OnLoadListner;
+import com.hyaline.avoidbrowser.ui.customviews.DynamicConstraintLayout;
+import com.hyaline.avoidbrowser.ui.fragments.OnWebStuffListner;
 import com.hyaline.avoidbrowser.ui.fragments.webhunt.WebHuntFragment;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 
 import java.util.List;
 
-public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBinding> implements OnLoadListner {
+public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBinding> implements OnWebStuffListner {
 
     private FragmentManager fragmentManager;
     private WebHuntFragment current;
@@ -130,6 +132,38 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
     @Override
     public void onLoadFinish() {
         viewModel.load(false);
+    }
+
+    private ValueAnimator animator;
+    private int baseHeight;
+
+    @Override
+    public void onWebScrollChanged(int xOffset, int yOffset) {
+//        int height = dataBinding.searchPanel.base.getMeasuredHeight();
+//        if (baseHeight == 0) {
+//            baseHeight = height;
+//        }
+//        if (yOffset > 0 && height == baseHeight) {
+//            anim(baseHeight, 0);
+//        } else if (yOffset < 0 && height == 0) {
+//            anim(0, baseHeight);
+//        }
+    }
+
+    private void anim(int from, int to) {
+        DynamicConstraintLayout base = dataBinding.searchPanel.base;
+        if (animator == null) {
+            animator = new ValueAnimator();
+            animator.setDuration(200);
+            animator.addUpdateListener(animation -> {
+                int value = (int) animation.getAnimatedValue();
+                base.setNewHeight(value);
+            });
+        }
+        if (animator.isRunning())
+            return;
+        animator.setIntValues(from, to);
+        animator.start();
     }
 
     private void checkMenuSheet() {
