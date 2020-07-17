@@ -27,6 +27,7 @@
             android:weightSum="6"
             app:clickCommand="@{viewModel.onSearchClick}"
             app:layout_constraintEnd_toStartOf="@id/ref"
+            android:transitionName="@string/search_panel"
             app:layout_constraintStart_toStartOf="parent">
 
             <com.qmuiteam.qmui.alpha.QMUIAlphaTextView

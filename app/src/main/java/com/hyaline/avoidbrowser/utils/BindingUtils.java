@@ -1,6 +1,7 @@
 package com.hyaline.avoidbrowser.utils;
 
 import android.view.View;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
@@ -27,5 +28,24 @@ public class BindingUtils {
     @BindingAdapter(value = {"imgRes"})
     public static void setImageRes(ImageView view, int res) {
         view.setImageResource(res);
+    }
+
+    @BindingAdapter(value = {"viewVisible", "showAnim", "hideAnim"}, requireAll = false)
+    public static void setViewVisible(View view, boolean visible, int showAnim, int hideAnim) {
+        if (visible) {
+            if (view.getVisibility() != View.VISIBLE) {
+                view.setVisibility(View.VISIBLE);
+                if (showAnim != 0) {
+                    view.setAnimation(AnimationUtils.loadAnimation(view.getContext(), showAnim));
+                }
+            }
+        } else {
+            if (view.getVisibility() == View.VISIBLE) {
+                view.setVisibility(View.GONE);
+                if (hideAnim != 0) {
+                    view.setAnimation(AnimationUtils.loadAnimation(view.getContext(), hideAnim));
+                }
+            }
+        }
     }
 }

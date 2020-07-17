@@ -26,7 +26,7 @@ public abstract class BaseActivity<VM extends BaseViewModel, DB extends ViewData
     protected int widthPixels, heightPixels;
     protected int statusBarHeight, navigationBarHeight;
 
-    private OnBackHandler backHandler;
+    protected OnBackHandler backHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

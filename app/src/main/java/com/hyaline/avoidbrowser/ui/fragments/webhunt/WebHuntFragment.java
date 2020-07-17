@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -20,7 +19,9 @@ import com.hyaline.avoidbrowser.ui.customviews.LoadingView;
 import com.hyaline.avoidbrowser.ui.customviews.NestedWebView;
 import com.hyaline.avoidbrowser.ui.fragments.OnWebStuffListner;
 import com.qmuiteam.qmui.util.QMUIDirection;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUIViewHelper;
+import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
@@ -31,11 +32,12 @@ import com.tencent.smtt.sdk.WebViewClient;
  * Description: blablabla
  */
 public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebHuntBinding> {
-    private String url;
     private NestedWebView webView;
     private WebViewClient client;
+    private WebChromeClient chromeClient;
     private boolean clearHistory, isRedirect;
-    private OnWebStuffListner loadListner;
+    private OnWebStuffListner loadlistner;
+    private PageInfo pageInfo;
 
     @Override
     protected int layoutId() {
@@ -51,41 +53,26 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getActivity() instanceof OnWebStuffListner) {
-            loadListner = (OnWebStuffListner) getActivity();
+            loadlistner = (OnWebStuffListner) getActivity();
         }
+        pageInfo = new PageInfo();
     }
 
     @Override
     protected void initData() {
         Bundle arguments = getArguments();
         if (arguments != null) {
-            url = arguments.getString("url");
+            pageInfo.setUrl(arguments.getString("url"));
         }
     }
-
-    private Animation.AnimationListener listener = new Animation.AnimationListener() {
-        @Override
-        public void onAnimationStart(Animation animation) {
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animation animation) {
-            dataBinding.loading.setVisibility(View.GONE);
-        }
-
-        @Override
-        public void onAnimationRepeat(Animation animation) {
-
-        }
-    };
 
     @Override
     protected void initView() {
         initWebView();
         initClient();
+        initChromeClient();
         initSetting();
-        webView.loadUrl(url);
+        webView.loadUrl(pageInfo.getUrl());
         dataBinding.loading.setListener(new LoadingView.OnLoadListener() {
             @Override
             public void onLoadAnimStart() {
@@ -97,14 +84,32 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
 
             @Override
             public void onLoadAnimDone() {
-                QMUIViewHelper.slideOut(dataBinding.loading, 200, listener, true, QMUIDirection.BOTTOM_TO_TOP);
+                dataBinding.loading.setVisibility(View.GONE);
+                QMUIViewHelper.slideOut(dataBinding.loading, 200, null, true, QMUIDirection.BOTTOM_TO_TOP);
             }
         });
     }
 
+    private void initChromeClient() {
+        chromeClient = new WebChromeClient() {
+            @Override
+            public void onReceivedTitle(WebView webView, String s) {
+                super.onReceivedTitle(webView, s);
+                pageInfo.setTitle(s);
+            }
+
+            @Override
+            public void onReceivedIcon(WebView webView, Bitmap bitmap) {
+                super.onReceivedIcon(webView, bitmap);
+                pageInfo.setIcon(bitmap);
+            }
+        };
+        webView.setWebChromeClient(chromeClient);
+    }
+
     private void initWebView() {
         webView = new NestedWebView(getActivity());
-        ViewGroup.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, loadListner.getScrollHeight());
+        ViewGroup.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, loadlistner.getScrollHeight());
         dataBinding.base.addView(webView, 0, params);
         webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
 
@@ -119,8 +124,8 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
                 isRedirect = false;
                 Log.e("wwh", "WebHuntFragment --> onPageStarted: " + s);
                 dataBinding.loading.startLoading();
-                if (loadListner != null) {
-                    loadListner.onLoadStart();
+                if (loadlistner != null) {
+                    loadlistner.onLoadStart();
                 }
             }
 
@@ -135,12 +140,13 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
                     clearHistory = false;
                 }
                 dataBinding.loading.done();
-                if (loadListner != null) {
-                    loadListner.onLoadFinish();
+                if (loadlistner != null) {
+                    loadlistner.onLoadFinish();
                 }
-                if (webView.getHeight() < loadListner.getScrollHeight()) {
+                pageInfo.setUrl(s);
+                if (webView.getHeight() < loadlistner.getScrollHeight()) {
                     ViewGroup.LayoutParams params = webView.getLayoutParams();
-                    params.height = loadListner.getScrollHeight();
+                    params.height = loadlistner.getScrollHeight();
                     webView.setLayoutParams(params);
                 }
             }
@@ -265,5 +271,15 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
         if (webView != null) {
             webView.stopLoading();
         }
+    }
+
+    public PageInfo getPageInfo() {
+        int width = QMUIDisplayHelper.getUsefulScreenWidth(webView);
+        int height = QMUIDisplayHelper.getUsefulScreenHeight(webView);
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        pageInfo.destroyCache();
+        webView.getX5WebViewExtension().snapshotVisible(bitmap,
+                false, false, false, false, 1, 1, () -> pageInfo.setCacheBitmap(bitmap));
+        return pageInfo;
     }
 }

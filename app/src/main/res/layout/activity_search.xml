@@ -1,9 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.activities.search.SearchActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyaline.avoidbrowser.ui.activities.search.SearchViewModel" />
+
+        <import type="android.text.TextUtils" />
+    </data>
+
+    <com.qmuiteam.qmui.layout.QMUIConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.activities.search.SearchActivity">
+
+        <com.qmuiteam.qmui.layout.QMUIConstraintLayout
+            android:id="@+id/top_base"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/top_color">
+
+            <com.qmuiteam.qmui.layout.QMUILinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:background="@drawable/search_layout_bg"
+                android:transitionName="@string/search_panel"
+                android:weightSum="10">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="7.6"
+                    android:background="@color/transparent"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="输入网址/关键字"
+                    android:singleLine="true"
+                    android:text="@={viewModel.keyword}"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white_alpha" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:padding="3dp"
+                    android:src="@drawable/close_white"
+                    app:clickCommand="@{viewModel.clearEdit}"
+                    app:viewVisible="@{!TextUtils.isEmpty(viewModel.keyword)}" />
+
+                <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_margin="5dp"
+                    android:layout_weight="2"
+                    android:text="搜索"
+                    android:textColor="@color/white"
+                    app:clickCommand="@{viewModel.onSearchClick}"
+                    app:qmui_backgroundColor="@color/app_middle"
+                    app:qmui_radius="10dp" />
+            </com.qmuiteam.qmui.layout.QMUILinearLayout>
+        </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
+    </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
+</layout>
