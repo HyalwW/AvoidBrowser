@@ -42,4 +42,8 @@
     <color name="timecode">#ddffffdd</color>
     <color name="timecode_shadow">#aa000000</color>
     <color name="alpha_white">#88FFFFFF</color>
+
+    <color name="app_start">#0D69FF</color>
+    <color name="app_middle">#7444FF</color>
+    <color name="app_end">#DF1FFF</color>
 </resources>

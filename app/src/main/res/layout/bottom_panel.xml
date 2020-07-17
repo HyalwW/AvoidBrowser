@@ -10,9 +10,10 @@
     </data>
 
     <com.qmuiteam.qmui.layout.QMUILinearLayout
+        android:id="@+id/base"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/volume_color"
+        android:layout_height="40dp"
+        android:background="@drawable/bottom_color"
         android:weightSum="5">
 
         <include

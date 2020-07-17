@@ -17,6 +17,7 @@ import com.hyaline.avoidbrowser.R;
 import com.hyaline.avoidbrowser.base.BaseFragment;
 import com.hyaline.avoidbrowser.databinding.FragmentWebHuntBinding;
 import com.hyaline.avoidbrowser.ui.customviews.LoadingView;
+import com.hyaline.avoidbrowser.ui.customviews.NestedWebView;
 import com.hyaline.avoidbrowser.ui.fragments.OnWebStuffListner;
 import com.qmuiteam.qmui.util.QMUIDirection;
 import com.qmuiteam.qmui.util.QMUIViewHelper;
@@ -31,7 +32,7 @@ import com.tencent.smtt.sdk.WebViewClient;
  */
 public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebHuntBinding> {
     private String url;
-    private WebView webView;
+    private NestedWebView webView;
     private WebViewClient client;
     private boolean clearHistory, isRedirect;
     private OnWebStuffListner loadListner;
@@ -102,13 +103,11 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
     }
 
     private void initWebView() {
-        webView = new WebView(getActivity());
-        ViewGroup.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        webView = new NestedWebView(getActivity());
+        ViewGroup.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, loadListner.getScrollHeight());
         dataBinding.base.addView(webView, 0, params);
         webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (loadListner != null) {
-                loadListner.onWebScrollChanged(scrollX - oldScrollX, scrollY - oldScrollY);
-            }
+
         });
     }
 
@@ -138,6 +137,11 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
                 dataBinding.loading.done();
                 if (loadListner != null) {
                     loadListner.onLoadFinish();
+                }
+                if (webView.getHeight() < loadListner.getScrollHeight()) {
+                    ViewGroup.LayoutParams params = webView.getLayoutParams();
+                    params.height = loadListner.getScrollHeight();
+                    webView.setLayoutParams(params);
                 }
             }
 

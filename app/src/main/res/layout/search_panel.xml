@@ -9,11 +9,14 @@
             type="com.hyaline.avoidbrowser.ui.activities.main.MainViewModel" />
     </data>
 
-    <com.hyaline.avoidbrowser.ui.customviews.DynamicConstraintLayout
+    <com.qmuiteam.qmui.layout.QMUIConstraintLayout
         android:id="@+id/base"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/volume_color">
+        android:background="@drawable/top_color"
+        android:shadowColor="@color/glass_gray"
+        android:outlineAmbientShadowColor="@color/glass_gray"
+        android:shadowDy="-10">
 
         <com.qmuiteam.qmui.layout.QMUILinearLayout
             android:id="@+id/search_layout"
@@ -52,5 +55,5 @@
             app:clickCommand="@{viewModel.onRefreshClick}"
             app:imgRes="@{viewModel.refreshRes}"
             app:layout_constraintEnd_toEndOf="parent" />
-    </com.hyaline.avoidbrowser.ui.customviews.DynamicConstraintLayout>
+    </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
 </layout>

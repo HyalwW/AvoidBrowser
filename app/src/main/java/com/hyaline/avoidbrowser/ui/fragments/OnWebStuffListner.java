@@ -10,5 +10,5 @@ public interface OnWebStuffListner {
 
     void onLoadFinish();
 
-    void onWebScrollChanged(int xOffset, int yOffset);
+    int getScrollHeight();
 }
