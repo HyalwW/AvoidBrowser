@@ -10,5 +10,7 @@ public interface OnWebStuffListner {
 
     void onLoadFinish();
 
+    void onTitleChanged(String title);
+
     int getScrollHeight();
 }

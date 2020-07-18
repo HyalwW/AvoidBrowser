@@ -13,10 +13,7 @@
         android:id="@+id/base"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@drawable/top_color"
-        android:shadowColor="@color/glass_gray"
-        android:outlineAmbientShadowColor="@color/glass_gray"
-        android:shadowDy="-10">
+        android:background="@drawable/top_color">
 
         <com.qmuiteam.qmui.layout.QMUILinearLayout
             android:id="@+id/search_layout"
@@ -24,20 +21,23 @@
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:background="@drawable/search_layout_bg"
+            android:transitionName="@string/search_panel"
             android:weightSum="6"
             app:clickCommand="@{viewModel.onSearchClick}"
             app:layout_constraintEnd_toStartOf="@id/ref"
-            android:transitionName="@string/search_panel"
             app:layout_constraintStart_toStartOf="parent">
 
             <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_marginStart="18dp"
                 android:layout_weight="5"
-                android:gravity="center"
+                android:ellipsize="marquee"
+                android:gravity="center_vertical"
+                android:singleLine="true"
                 android:text="@{viewModel.searchText}"
                 android:textColor="@color/white"
-                android:textSize="20sp" />
+                android:textSize="18dp" />
 
             <ImageView
                 android:layout_width="0dp"

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hyaline.avoidbrowser.data.beans.SearchHistoryBean" />
+
+        <variable
+            name="viewModel"
+            type="com.hyaline.avoidbrowser.ui.activities.search.SearchViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@drawable/round_white_item_bg"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:padding="5dp"
+            android:src="@drawable/right_top"
+            app:clickCommand="@{viewModel.onSearchItemUp}"
+            app:clickData="@{item}" />
+
+        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="5dp"
+            android:layout_weight="1"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="@{item.keyword}"
+            android:textSize="20dp"
+            app:clickCommand="@{viewModel.onSearchItemClick}"
+            app:clickData="@{item}" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/alpha_gray" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="3dp"
+            android:padding="5dp"
+            android:src="@drawable/close_black"
+            app:clickCommand="@{viewModel.onSearchItemDelete}"
+            app:clickData="@{item}" />
+    </LinearLayout>
+</layout>

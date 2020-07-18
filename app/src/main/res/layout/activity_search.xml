@@ -15,6 +15,7 @@
     <com.qmuiteam.qmui.layout.QMUIConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/light_white"
         tools:context=".ui.activities.search.SearchActivity">
 
         <com.qmuiteam.qmui.layout.QMUIConstraintLayout
@@ -67,5 +68,75 @@
                     app:qmui_radius="10dp" />
             </com.qmuiteam.qmui.layout.QMUILinearLayout>
         </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
+
+        <com.qmuiteam.qmui.alpha.QMUIAlphaLinearLayout
+            android:id="@+id/temp_layout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/round_white_bg"
+            android:weightSum="10"
+            app:layout_constraintTop_toBottomOf="@id/top_base"
+            app:viewVisible="@{!TextUtils.isEmpty(viewModel.tempUrl)}">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="10dp"
+                android:layout_weight="8.5"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="@{viewModel.tempUrl}" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/alpha_gray" />
+
+            <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1.4"
+                android:gravity="center"
+                android:text="复制"
+                app:clickCommand="@{viewModel.onCopyClick}" />
+        </com.qmuiteam.qmui.alpha.QMUIAlphaLinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/search_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintTop_toBottomOf="@id/temp_layout"
+            app:viewVisible="@{viewModel.shItems.size() > 0}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:gravity="center_vertical"
+                android:text="搜索历史"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/clear_his"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.hyaline.avoidbrowser.ui.customviews.MaxHeightRecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                app:gapv="@{3}"
+                app:itemBinding="@{viewModel.shiBinding}"
+                app:items="@{viewModel.shItems}"
+                app:layout_constraintTop_toBottomOf="@id/clear_his"
+                app:maxHeight="300dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
 </layout>

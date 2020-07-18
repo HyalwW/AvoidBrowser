@@ -2,6 +2,7 @@ package com.hyaline.avoidbrowser.base;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -29,4 +30,6 @@ public abstract class BaseViewModel extends AndroidViewModel {
     protected abstract void onCreate(Application application);
 
     protected abstract void onDestroy();
+
+    protected abstract void parseIntent(Intent intent);
 }

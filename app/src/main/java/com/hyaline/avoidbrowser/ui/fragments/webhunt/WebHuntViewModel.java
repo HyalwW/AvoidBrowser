@@ -1,6 +1,7 @@
 package com.hyaline.avoidbrowser.ui.fragments.webhunt;
 
 import android.app.Application;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 
@@ -23,6 +24,11 @@ public class WebHuntViewModel extends BaseViewModel {
 
     @Override
     protected void onDestroy() {
+
+    }
+
+    @Override
+    protected void parseIntent(Intent intent) {
 
     }
 }

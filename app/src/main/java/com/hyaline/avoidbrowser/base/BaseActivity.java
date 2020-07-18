@@ -37,6 +37,7 @@ public abstract class BaseActivity<VM extends BaseViewModel, DB extends ViewData
         widthPixels = outMetrics.widthPixels;
         heightPixels = outMetrics.heightPixels;
         initViewModel();
+        viewModel.parseIntent(getIntent());
 //        QMUIStatusBarHelper.translucent(this);
         statusBarHeight = getStatusHeight();
         navigationBarHeight = getNavBarHeight();

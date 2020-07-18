@@ -2,6 +2,7 @@ package com.hyaline.avoidbrowser.ui.activities.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -97,7 +98,7 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
         List<Fragment> fragments = fragmentManager.getFragments();
         List<PageInfo> list = new ArrayList<>();
         for (Fragment fragment : fragments) {
-            PageInfo pageInfo = ((WebHuntFragment) fragment).getPageInfo();
+            PageInfo pageInfo = ((WebHuntFragment) fragment).getPageInfo(true);
             list.add(pageInfo);
         }
         return list;
@@ -130,16 +131,16 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
     private void initTop() {
         viewModel.getSearchEvent().observe(this, o -> {
             Intent intent = new Intent(this, SearchActivity.class);
+            PageInfo pageInfo = current.getPageInfo(false);
+            if (current != null && !TextUtils.isEmpty(pageInfo.getUrl())) {
+                String tempUrl = pageInfo.getUrl();
+                intent.putExtra("temp_url", tempUrl);
+            }
             ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, dataBinding.searchPanel.searchLayout, getString(R.string.search_panel));
             startActivityForResult(intent, 207, compat.toBundle());
         });
         viewModel.getCollectEvent().observe(this, o -> {
             Log.e("wwh", "MainActivity --> initTop: " + "收藏");
-        });
-        viewModel.getCollectEvent().observe(this, o -> {
-            if (current != null) {
-                current.refresh();
-            }
         });
         viewModel.getRefreshEvent().observe(this, o -> {
             if (current != null) {
@@ -196,6 +197,11 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
     }
 
     @Override
+    public void onTitleChanged(String title) {
+        viewModel.setTitle(title);
+    }
+
+    @Override
     public int getScrollHeight() {
         return dataBinding.bottomPanel.base.getTop();
     }
@@ -221,6 +227,7 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
                     case 3:
                         break;
                     case 4:
+                        startActivity(new Intent(this, SettingActivity.class));
                         break;
                     case 5:
                         finish();

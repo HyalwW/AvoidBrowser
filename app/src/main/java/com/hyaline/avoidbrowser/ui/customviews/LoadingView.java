@@ -85,8 +85,7 @@ public class LoadingView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         float x = (float) (getMeasuredWidth() / 2f + getMeasuredWidth() / 2f * Math.sin(pos));
-        paint.setColor(Color.rgb(255 - rgb[0], 255 - rgb[1], 255 - rgb[2]));
-        canvas.drawColor(Color.rgb(rgb[0], rgb[1], rgb[2]));
+        canvas.drawColor(0x887444ff);
         float v = getMeasuredHeight() * 0.3f;
         float radius = isLoading ? v : Math.max(v, persent * getMeasuredWidth() * 2);
         canvas.drawCircle(x, getMeasuredHeight() >> 1, radius, paint);

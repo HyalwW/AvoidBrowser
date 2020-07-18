@@ -17,7 +17,7 @@
         <com.hyaline.avoidbrowser.ui.customviews.LoadingView
             android:id="@+id/loading"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="16dp"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

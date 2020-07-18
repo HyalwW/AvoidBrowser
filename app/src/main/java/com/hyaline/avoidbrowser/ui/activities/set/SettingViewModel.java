@@ -1,6 +1,7 @@
 package com.hyaline.avoidbrowser.ui.activities.set;
 
 import android.app.Application;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableField;
@@ -22,11 +23,15 @@ public class SettingViewModel extends BaseViewModel {
     @Override
     protected void onCreate(Application application) {
         address = new ObservableField<>("这是设置界面");
-        address.set("设置界面www.baidu.com");
     }
 
     @Override
     protected void onDestroy() {
+
+    }
+
+    @Override
+    protected void parseIntent(Intent intent) {
 
     }
 

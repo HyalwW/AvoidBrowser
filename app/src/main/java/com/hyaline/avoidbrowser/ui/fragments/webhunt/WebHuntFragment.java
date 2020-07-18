@@ -95,6 +95,9 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         pageInfo.setIsShow(!hidden);
+        if (!hidden) {
+            loadlistner.onTitleChanged(pageInfo.getTitleStr());
+        }
     }
 
     private void initChromeClient() {
@@ -102,6 +105,7 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
             @Override
             public void onReceivedTitle(WebView webView, String s) {
                 super.onReceivedTitle(webView, s);
+                loadlistner.onTitleChanged(s);
                 pageInfo.setTitle(s);
             }
 
@@ -280,19 +284,25 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
         }
     }
 
-    public PageInfo getPageInfo() {
-        int width = QMUIDisplayHelper.getUsefulScreenWidth(webView);
-        int height = QMUIDisplayHelper.getUsefulScreenHeight(webView);
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-        IX5WebViewExtension extension = webView.getX5WebViewExtension();
-        if (extension != null) {
-            extension.snapshotVisible(bitmap,
-                    false, false, false, false, 1, 1, () -> pageInfo.setCacheBitmap(bitmap));
-        } else {
-            webView.setDrawingCacheEnabled(true);
-            Bitmap cache = Bitmap.createBitmap(webView.getDrawingCache());
-            webView.setDrawingCacheEnabled(false);
-            pageInfo.setCacheBitmap(cache);
+    public PageInfo getPageInfo(boolean needBitmap) {
+        if (needBitmap) {
+            int width = QMUIDisplayHelper.getUsefulScreenWidth(webView);
+            int height = QMUIDisplayHelper.getUsefulScreenHeight(webView);
+            Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            IX5WebViewExtension extension = webView.getX5WebViewExtension();
+            if (extension != null) {
+                extension.snapshotVisible(bitmap,
+                        false, false, false, false, 1, 1, () -> pageInfo.setCacheBitmap(bitmap));
+            } else {
+                try {
+                    webView.setDrawingCacheEnabled(true);
+                    Bitmap cache = Bitmap.createBitmap(webView.getDrawingCache());
+                    webView.setDrawingCacheEnabled(false);
+                    pageInfo.setCacheBitmap(cache);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return pageInfo;
     }

@@ -65,14 +65,15 @@ public class BindingUtils {
         LinearLayoutManager layout;
         int gapH = gaph;
         int gapV = gapv;
+        int ori = orientation == 0 ? RecyclerView.VERTICAL : RecyclerView.HORIZONTAL;
         if (spanSize == 0) {
             layout = new LinearLayoutManager(recyclerView.getContext());
             recyclerView.addItemDecoration(new MyItemDecoration(gapH, gapV));
-            layout.setOrientation(orientation);
+            layout.setOrientation(ori);
         } else {
             layout = new GridLayoutManager(recyclerView.getContext(), spanSize);
             recyclerView.addItemDecoration(new GridSpacingItemDecoration(spanSize, gapH, gapV, false));
-            layout.setOrientation(orientation);
+            layout.setOrientation(ori);
         }
         recyclerView.setLayoutManager(layout);
 

@@ -1,6 +1,7 @@
 package com.hyaline.avoidbrowser.ui.activities.main;
 
 import android.app.Application;
+import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableArrayList;
@@ -77,6 +78,11 @@ public class MainViewModel extends BaseViewModel {
 
     }
 
+    @Override
+    protected void parseIntent(Intent intent) {
+
+    }
+
     public BindingCommand getGoSettingCommand() {
         return goSettingCommand;
     }
@@ -139,5 +145,9 @@ public class MainViewModel extends BaseViewModel {
 
     public SingleLiveEvent<BottomItem> getOnItemClickEvent() {
         return onItemClickEvent;
+    }
+
+    public void setTitle(String title) {
+        searchText.set(title);
     }
 }
