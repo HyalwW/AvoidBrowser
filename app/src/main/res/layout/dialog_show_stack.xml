@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="model"
+            type="com.hyaline.avoidbrowser.ui.activities.main.showStack.ShowStackModel" />
+    </data>
+
+    <com.qmuiteam.qmui.layout.QMUIConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/glass_gray"
+        app:clickCommand="@{model.onBlankClick}">
+
+        <com.hyaline.avoidbrowser.ui.customviews.MaxHeightRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            app:gaph="@{20}"
+            app:gapv="@{30}"
+            app:itemBinding="@{model.pageBinding}"
+            app:items="@{model.pages}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:orientation="@{1}"
+            app:spanSize="@{2}" />
+    </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
+</layout>

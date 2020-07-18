@@ -2,6 +2,7 @@ package com.hyaline.avoidbrowser.ui.fragments.webhunt;
 
 import android.graphics.Bitmap;
 
+import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 
 /**
@@ -11,9 +12,16 @@ import androidx.databinding.ObservableField;
  */
 public class PageInfo {
     private String url;
-    private String title;
+    private ObservableField<String> title;
     private Bitmap icon;
     private ObservableField<Bitmap> cache;
+    private ObservableBoolean isShow;
+
+    public PageInfo() {
+        title = new ObservableField<>("");
+        cache = new ObservableField<>();
+        isShow = new ObservableBoolean(true);
+    }
 
     public String getUrl() {
         return url;
@@ -23,12 +31,16 @@ public class PageInfo {
         this.url = url;
     }
 
-    public String getTitle() {
+    public String getTitleStr() {
+        return title.get();
+    }
+
+    public ObservableField<String> getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title.set(title);
     }
 
     public Bitmap getIcon() {
@@ -47,14 +59,23 @@ public class PageInfo {
     }
 
     public void setCacheBitmap(Bitmap cache) {
-        if (this.cache == null) {
-            this.cache = new ObservableField<>(null);
-        }
         this.cache.set(cache);
     }
 
+    public ObservableBoolean getIsShow() {
+        return isShow;
+    }
+
+    public boolean isShow() {
+        return isShow.get();
+    }
+
+    public void setIsShow(boolean isShow) {
+        this.isShow.set(isShow);
+    }
+
     public void destroyCache() {
-        if (this.cache != null ) {
+        if (this.cache != null) {
             Bitmap cache = this.cache.get();
             if (cache != null && !cache.isRecycled()) {
                 cache.recycle();

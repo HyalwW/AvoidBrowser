@@ -1,7 +1,6 @@
 package com.hyaline.avoidbrowser.ui.activities.main;
 
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -15,6 +14,8 @@ import com.hyaline.avoidbrowser.BR;
 import com.hyaline.avoidbrowser.R;
 import com.hyaline.avoidbrowser.base.BaseActivity;
 import com.hyaline.avoidbrowser.databinding.ActivityMainBinding;
+import com.hyaline.avoidbrowser.ui.activities.main.showStack.ShowStackDialog;
+import com.hyaline.avoidbrowser.ui.activities.main.showStack.ShowStackModel;
 import com.hyaline.avoidbrowser.ui.activities.search.SearchActivity;
 import com.hyaline.avoidbrowser.ui.activities.set.SettingActivity;
 import com.hyaline.avoidbrowser.ui.fragments.OnWebStuffListner;
@@ -22,6 +23,7 @@ import com.hyaline.avoidbrowser.ui.fragments.webhunt.PageInfo;
 import com.hyaline.avoidbrowser.ui.fragments.webhunt.WebHuntFragment;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBinding> implements OnWebStuffListner {
@@ -35,6 +37,8 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
     static final String MENU = "菜单";
     static final String HOME = "主页";
     static final String STACK = "切换";
+
+    private ShowStackDialog dialog;
 
     @Override
     protected int layoutId() {
@@ -82,35 +86,46 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
                     }
                     break;
                 case STACK:
-                    checkPagesSheet();
+                    checkStackDialog();
+                    dialog.show(getList());
                     break;
             }
         });
     }
 
-    private void checkPagesSheet() {
+    private List<PageInfo> getList() {
         List<Fragment> fragments = fragmentManager.getFragments();
-        QMUIBottomSheet.BottomListSheetBuilder builder = new QMUIBottomSheet.BottomListSheetBuilder(this)
-                .setOnSheetItemClickListener((dialog, itemView, position, tag) -> {
-                    if (fragments.size() > 1) {
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        Fragment fragment = fragments.get(position);
-                        transaction.hide(current).show(fragment).commit();
-                        current = (WebHuntFragment) fragment;
-                    }
-                    dialog.dismiss();
-                })
-                .setAddCancelBtn(true)
-                .setNeedRightMark(true);
+        List<PageInfo> list = new ArrayList<>();
         for (Fragment fragment : fragments) {
             PageInfo pageInfo = ((WebHuntFragment) fragment).getPageInfo();
-            builder.addItem(new BitmapDrawable(getResources(), pageInfo.getIcon()), pageInfo.getTitle());
-            if (fragment == current) {
-                builder.setCheckedIndex(fragments.indexOf(fragment));
-            }
+            list.add(pageInfo);
         }
-        builder.build().show();
+        return list;
     }
+
+    private void checkStackDialog() {
+        if (dialog == null) {
+            dialog = new ShowStackDialog(this, new ShowStackModel());
+            dialog.setListener(new ShowStackDialog.OnPageChangedListener() {
+                @Override
+                public void onDelete(int delPos) {
+                    List<Fragment> fragments = fragmentManager.getFragments();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.remove(fragments.get(delPos)).commit();
+                }
+
+                @Override
+                public void onShow(int showPos) {
+                    List<Fragment> fragments = fragmentManager.getFragments();
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    Fragment fragment = fragments.get(showPos);
+                    transaction.hide(current).show(fragment).commit();
+                    current = (WebHuntFragment) fragment;
+                }
+            });
+        }
+    }
+
 
     private void initTop() {
         viewModel.getSearchEvent().observe(this, o -> {

@@ -12,12 +12,18 @@ import androidx.core.content.ContextCompat;
 import com.hyaline.avoidbrowser.R;
 import com.hyaline.avoidbrowser.ui.activities.main.MainActivity;
 import com.hyaline.avoidbrowser.ui.customviews.RippleView;
+import com.hyaline.avoidbrowser.utils.ThreadPool;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
+import com.tencent.smtt.export.external.TbsCoreSettings;
+import com.tencent.smtt.sdk.QbSdk;
+
+import java.util.HashMap;
 
 public class SplashActivity extends AppCompatActivity {
     private static final String[] BASIC_PERMISSIONS = new String[]{Manifest.permission.INTERNET, Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE};
+            Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION};
     private RippleView rippleView;
     private Runnable jump = () -> {
         Intent intent = new Intent(this, MainActivity.class);
@@ -31,6 +37,12 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         rippleView = findViewById(R.id.ripple);
+        ThreadPool.single().execute(() -> {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put(TbsCoreSettings.TBS_SETTINGS_USE_SPEEDY_CLASSLOADER, true);
+            map.put(TbsCoreSettings.TBS_SETTINGS_USE_DEXLOADER_SERVICE, true);
+            QbSdk.initTbsSettings(map);
+        });
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.hyaline.avoidbrowser.ui.fragments.OnWebStuffListner;
 import com.qmuiteam.qmui.util.QMUIDirection;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUIViewHelper;
+import com.tencent.smtt.export.external.extension.interfaces.IX5WebViewExtension;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -88,6 +89,12 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
                 QMUIViewHelper.slideOut(dataBinding.loading, 200, null, true, QMUIDirection.BOTTOM_TO_TOP);
             }
         });
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        pageInfo.setIsShow(!hidden);
     }
 
     private void initChromeClient() {
@@ -277,9 +284,16 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
         int width = QMUIDisplayHelper.getUsefulScreenWidth(webView);
         int height = QMUIDisplayHelper.getUsefulScreenHeight(webView);
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-        pageInfo.destroyCache();
-        webView.getX5WebViewExtension().snapshotVisible(bitmap,
-                false, false, false, false, 1, 1, () -> pageInfo.setCacheBitmap(bitmap));
+        IX5WebViewExtension extension = webView.getX5WebViewExtension();
+        if (extension != null) {
+            extension.snapshotVisible(bitmap,
+                    false, false, false, false, 1, 1, () -> pageInfo.setCacheBitmap(bitmap));
+        } else {
+            webView.setDrawingCacheEnabled(true);
+            Bitmap cache = Bitmap.createBitmap(webView.getDrawingCache());
+            webView.setDrawingCacheEnabled(false);
+            pageInfo.setCacheBitmap(cache);
+        }
         return pageInfo;
     }
 }
