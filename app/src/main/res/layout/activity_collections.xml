@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyaline.avoidbrowser.ui.activities.collections.CollectionsViewModel" />
+    </data>
+
+    <com.qmuiteam.qmui.layout.QMUIConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
+</layout>

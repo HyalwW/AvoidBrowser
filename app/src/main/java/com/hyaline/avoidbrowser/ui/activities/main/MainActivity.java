@@ -15,6 +15,8 @@ import com.hyaline.avoidbrowser.BR;
 import com.hyaline.avoidbrowser.R;
 import com.hyaline.avoidbrowser.base.BaseActivity;
 import com.hyaline.avoidbrowser.databinding.ActivityMainBinding;
+import com.hyaline.avoidbrowser.ui.activities.collections.CollectionsActivity;
+import com.hyaline.avoidbrowser.ui.activities.history.HistoryActivity;
 import com.hyaline.avoidbrowser.ui.activities.main.showStack.ShowStackDialog;
 import com.hyaline.avoidbrowser.ui.activities.main.showStack.ShowStackModel;
 import com.hyaline.avoidbrowser.ui.activities.search.SearchActivity;
@@ -219,8 +221,10 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
             builder.setOnSheetItemClickListener((dialog, itemView) -> {
                 switch (((int) itemView.getTag())) {
                     case 0:
+                        startActivity(new Intent(this, HistoryActivity.class));
                         break;
                     case 1:
+                        startActivity(new Intent(this, CollectionsActivity.class));
                         break;
                     case 2:
                         break;

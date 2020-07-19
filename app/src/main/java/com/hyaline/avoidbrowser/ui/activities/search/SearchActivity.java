@@ -5,16 +5,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
-import androidx.lifecycle.Observer;
-
 import com.hyaline.avoidbrowser.BR;
 import com.hyaline.avoidbrowser.R;
 import com.hyaline.avoidbrowser.base.BaseActivity;
-import com.hyaline.avoidbrowser.data.AppDatabase;
-import com.hyaline.avoidbrowser.data.beans.SearchHistoryBean;
 import com.hyaline.avoidbrowser.databinding.ActivitySearchBinding;
 
-import java.util.List;
 import java.util.regex.Pattern;
 
 public class SearchActivity extends BaseActivity<SearchViewModel, ActivitySearchBinding> {
@@ -57,6 +52,9 @@ public class SearchActivity extends BaseActivity<SearchViewModel, ActivitySearch
             data.putExtra("url", keyword);
         } else if (keyword.startsWith("www.") || keyword.startsWith("WWW.")) {
             keyword = "http://" + keyword;
+            data.putExtra("type", 1);
+            data.putExtra("url", keyword);
+        } else if (keyword.startsWith("https://") || keyword.startsWith("http://")) {
             data.putExtra("type", 1);
             data.putExtra("url", keyword);
         } else {

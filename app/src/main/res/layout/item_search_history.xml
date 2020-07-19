@@ -13,7 +13,7 @@
             type="com.hyaline.avoidbrowser.ui.activities.search.SearchViewModel" />
     </data>
 
-    <LinearLayout
+    <com.hyaline.avoidbrowser.ui.customviews.ScaleLinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@drawable/round_white_item_bg"
@@ -54,5 +54,5 @@
             android:src="@drawable/close_black"
             app:clickCommand="@{viewModel.onSearchItemDelete}"
             app:clickData="@{item}" />
-    </LinearLayout>
+    </com.hyaline.avoidbrowser.ui.customviews.ScaleLinearLayout>
 </layout>

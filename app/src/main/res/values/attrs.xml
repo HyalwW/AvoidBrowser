@@ -3,4 +3,11 @@
     <declare-styleable name="MaxHeightRecyclerView">
         <attr name="maxHeight" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="ScaleConstLayout">
+        <attr name="layout_radius" format="dimension" />
+        <attr name="radius_lt" format="dimension" />
+        <attr name="radius_rt" format="dimension" />
+        <attr name="radius_lb" format="dimension" />
+        <attr name="radius_rb" format="dimension" />
+    </declare-styleable>
 </resources>
