@@ -15,7 +15,7 @@ public class SectionHeader implements QMUISection.Model<SectionHeader> {
 
     public SectionHeader(long timeStart) {
         this.timeStart = timeStart;
-        showTime = getShowTime(timeStart);
+        showTime = createShowTime();
     }
 
     @Override
@@ -53,21 +53,21 @@ public class SectionHeader implements QMUISection.Model<SectionHeader> {
         this.showTime = showTime;
     }
 
-    public boolean isSameDay(long time) {
-        return time >= timeStart && time < timeStart + TimeConstants.DAY;
+    public boolean isToday() {
+        long millis = System.currentTimeMillis();
+        return millis >= timeStart && millis < timeStart + TimeConstants.DAY;
     }
 
-    public String getShowTime(long time) {
-        if (isSameDay(time)) {
+    public String createShowTime() {
+        long time = System.currentTimeMillis();
+        if (time >= timeStart && time < timeStart + TimeConstants.DAY) {
             return "今天";
-        } else if (isSameDay(time + TimeConstants.DAY)) {
+        } else if (time - TimeConstants.DAY >= timeStart && time - TimeConstants.DAY < timeStart + TimeConstants.DAY) {
             return "昨天 ";
-        } else if ((System.currentTimeMillis() - time) < 7 * TimeConstants.DAY) {
-            return TimeUtils.millis2String(time, "EEE");
-        } else if ((System.currentTimeMillis() - time) < 90 * (long) TimeConstants.DAY) {
-            return TimeUtils.millis2String(time, "M月dd日");
+        } else if ((System.currentTimeMillis() - timeStart) < 90 * (long) TimeConstants.DAY) {
+            return TimeUtils.millis2String(timeStart, "M月dd日");
         } else {
-            return TimeUtils.millis2String(time, "yyyy年MM月dd日");
+            return TimeUtils.millis2String(timeStart, "yyyy年MM月dd日");
         }
     }
 }

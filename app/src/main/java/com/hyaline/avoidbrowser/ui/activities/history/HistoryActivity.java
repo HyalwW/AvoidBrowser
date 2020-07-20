@@ -101,6 +101,7 @@ public class HistoryActivity extends BaseActivity<HistoryViewModel, ActivityHist
                 return false;
             }
         });
+        dataBinding.sectionView.getStickySectionWrapView().setBackgroundColor(getColor(R.color.app_start));
         dataBinding.sectionView.setAdapter(adapter);
         dataBinding.sectionView.setLayoutManager(new LinearLayoutManager(this));
         viewModel.getDao().loadLiveHistoriesBytime(50).observe(this, browseHistoryBeans -> {
