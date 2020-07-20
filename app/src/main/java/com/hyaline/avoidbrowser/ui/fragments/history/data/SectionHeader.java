@@ -1,4 +1,4 @@
-package com.hyaline.avoidbrowser.ui.activities.history.data;
+package com.hyaline.avoidbrowser.ui.fragments.history.data;
 
 import com.blankj.utilcode.constant.TimeConstants;
 import com.blankj.utilcode.util.TimeUtils;

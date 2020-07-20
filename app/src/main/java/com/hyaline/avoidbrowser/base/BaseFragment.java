@@ -67,6 +67,11 @@ public abstract class BaseFragment<VM extends BaseViewModel, DB extends ViewData
         dataBinding.setVariable(viewModelId(), viewModel);
     }
 
+    @Override
+    public boolean onBackPressed() {
+        return false;
+    }
+
     protected abstract int layoutId();
 
     protected abstract int viewModelId();

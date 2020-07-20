@@ -3,7 +3,7 @@ package com.hyaline.avoidbrowser.ui.activities.main;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
@@ -14,16 +14,19 @@ import androidx.fragment.app.FragmentTransaction;
 import com.hyaline.avoidbrowser.BR;
 import com.hyaline.avoidbrowser.R;
 import com.hyaline.avoidbrowser.base.BaseActivity;
+import com.hyaline.avoidbrowser.data.AppDatabase;
+import com.hyaline.avoidbrowser.data.beans.CollectBean;
+import com.hyaline.avoidbrowser.data.daos.CollectDao;
 import com.hyaline.avoidbrowser.databinding.ActivityMainBinding;
-import com.hyaline.avoidbrowser.ui.activities.collections.CollectionsActivity;
 import com.hyaline.avoidbrowser.ui.activities.history.HistoryActivity;
 import com.hyaline.avoidbrowser.ui.activities.main.showStack.ShowStackDialog;
 import com.hyaline.avoidbrowser.ui.activities.main.showStack.ShowStackModel;
 import com.hyaline.avoidbrowser.ui.activities.search.SearchActivity;
 import com.hyaline.avoidbrowser.ui.activities.set.SettingActivity;
-import com.hyaline.avoidbrowser.ui.fragments.OnWebStuffListner;
+import com.hyaline.avoidbrowser.ui.fragments.webhunt.OnWebStuffListner;
 import com.hyaline.avoidbrowser.ui.fragments.webhunt.PageInfo;
 import com.hyaline.avoidbrowser.ui.fragments.webhunt.WebHuntFragment;
+import com.hyaline.avoidbrowser.utils.ThreadPool;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
 
 import java.util.ArrayList;
@@ -33,7 +36,9 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
 
     private FragmentManager fragmentManager;
     private WebHuntFragment current;
+    private String currentUrl;
     private QMUIBottomSheet menuSheet;
+    private CollectDao collectDao;
 
     static final String BACK = "后退";
     static final String FORWARD = "前进";
@@ -55,6 +60,7 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
 
     @Override
     protected void initData() {
+        collectDao = AppDatabase.getDatabase().collectDao();
     }
 
     @Override
@@ -72,6 +78,10 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
                 case "fromHistory":
                     String url = intent.getStringExtra("url");
                     go2Fragment(url, null);
+                    break;
+                case "fromCollection":
+                    String url1 = intent.getStringExtra("url");
+                    go2Fragment(url1, null);
                     break;
             }
         }
@@ -146,16 +156,28 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
     private void initTop() {
         viewModel.getSearchEvent().observe(this, o -> {
             Intent intent = new Intent(this, SearchActivity.class);
-            PageInfo pageInfo = current.getPageInfo(false);
-            if (current != null && !TextUtils.isEmpty(pageInfo.getUrl())) {
-                String tempUrl = pageInfo.getUrl();
-                intent.putExtra("temp_url", tempUrl);
+            if (!TextUtils.isEmpty(currentUrl)) {
+                intent.putExtra("temp_url", currentUrl);
             }
             ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(this, dataBinding.searchPanel.searchLayout, getString(R.string.search_panel));
             startActivityForResult(intent, 207, compat.toBundle());
         });
         viewModel.getCollectEvent().observe(this, o -> {
-            Log.e("wwh", "MainActivity --> initTop: " + "收藏");
+            String title = viewModel.getSearchText().get();
+            String url = currentUrl;
+            CollectBean exist = collectDao.exist(url);
+            if (exist == null) {
+                CollectBean bean = new CollectBean();
+                bean.setName(title);
+                bean.setUrl(url);
+                ThreadPool.fixed().execute(() -> collectDao.insert(bean));
+                viewModel.setIsCollect(true);
+                Toast.makeText(this, "收藏成功~", Toast.LENGTH_SHORT).show();
+            } else {
+                ThreadPool.fixed().execute(() -> collectDao.delete(exist));
+                viewModel.setIsCollect(false);
+                Toast.makeText(this, "取消收藏成功~", Toast.LENGTH_SHORT).show();
+            }
         });
         viewModel.getRefreshEvent().observe(this, o -> {
             if (current != null) {
@@ -212,6 +234,12 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
     }
 
     @Override
+    public void onReceiveUrl(String url) {
+        currentUrl = url;
+        viewModel.setIsCollect(collectDao.exist(url) != null);
+    }
+
+    @Override
     public void onTitleChanged(String title) {
         viewModel.setTitle(title);
     }
@@ -224,8 +252,8 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
     private void checkMenuSheet() {
         if (menuSheet == null) {
             QMUIBottomSheet.BottomGridSheetBuilder builder = new QMUIBottomSheet.BottomGridSheetBuilder(this);
-            builder.addItem(R.drawable.history, "历史记录", 0, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE);
-            builder.addItem(R.drawable.collections, "书签/收藏", 1, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE);
+            builder.addItem(R.drawable.history, "历史/收藏", 0, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE);
+            builder.addItem(R.drawable.add_to_star, "添加书签", 1, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE);
             builder.addItem(R.drawable.download, "下载", 2, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE);
             builder.addItem(R.drawable.mode_night, "夜间模式", 3, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE);
             builder.addItem(R.drawable.set, "设置", 4, QMUIBottomSheet.BottomGridSheetBuilder.SECOND_LINE);
@@ -237,7 +265,6 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
                         startActivity(new Intent(this, HistoryActivity.class));
                         break;
                     case 1:
-                        startActivity(new Intent(this, CollectionsActivity.class));
                         break;
                     case 2:
                         break;

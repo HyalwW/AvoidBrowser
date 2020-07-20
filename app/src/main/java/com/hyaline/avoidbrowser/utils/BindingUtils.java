@@ -31,6 +31,20 @@ public class BindingUtils {
         });
     }
 
+    @BindingAdapter(value = {"longClickCommand", "longClickData"}, requireAll = false)
+    public static <T> void onLongClickCommand(View view, BindingCommand<T> command, T data) {
+        view.setOnLongClickListener(v -> {
+            if (command != null) {
+                if (data != null) {
+                    command.execute(data);
+                } else {
+                    command.execute();
+                }
+            }
+            return false;
+        });
+    }
+
     @BindingAdapter(value = {"imgRes"})
     public static void setImageRes(ImageView view, int res) {
         view.setImageResource(res);

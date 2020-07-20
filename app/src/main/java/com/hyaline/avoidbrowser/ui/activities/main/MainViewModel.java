@@ -150,4 +150,8 @@ public class MainViewModel extends BaseViewModel {
     public void setTitle(String title) {
         searchText.set(title);
     }
+
+    public void setIsCollect(boolean isCollect) {
+        collectRes.set(isCollect ? R.drawable.collected_white : R.drawable.uncollect_white);
+    }
 }

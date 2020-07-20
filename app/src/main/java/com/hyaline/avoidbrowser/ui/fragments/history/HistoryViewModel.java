@@ -1,4 +1,4 @@
-package com.hyaline.avoidbrowser.ui.activities.history;
+package com.hyaline.avoidbrowser.ui.fragments.history;
 
 import android.app.Application;
 import android.content.Intent;

@@ -20,7 +20,6 @@ import com.hyaline.avoidbrowser.data.daos.BrowseHistoryDao;
 import com.hyaline.avoidbrowser.databinding.FragmentWebHuntBinding;
 import com.hyaline.avoidbrowser.ui.customviews.LoadingView;
 import com.hyaline.avoidbrowser.ui.customviews.NestedWebView;
-import com.hyaline.avoidbrowser.ui.fragments.OnWebStuffListner;
 import com.hyaline.avoidbrowser.utils.ThreadPool;
 import com.qmuiteam.qmui.util.QMUIDirection;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
@@ -114,6 +113,7 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
         super.onHiddenChanged(hidden);
         pageInfo.setIsShow(!hidden);
         if (!hidden) {
+            loadlistner.onReceiveUrl(pageInfo.getUrl());
             loadlistner.onTitleChanged(pageInfo.getTitleStr());
         }
     }
@@ -169,10 +169,11 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
                     clearHistory = false;
                 }
                 dataBinding.loading.done();
+                pageInfo.setUrl(s);
                 if (loadlistner != null) {
                     loadlistner.onLoadFinish();
+                    loadlistner.onReceiveUrl(s);
                 }
-                pageInfo.setUrl(s);
                 ThreadPool.fixed().execute(saveHistoryRun);
                 if (webView.getHeight() < loadlistner.getScrollHeight()) {
                     ViewGroup.LayoutParams params = webView.getLayoutParams();

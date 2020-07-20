@@ -1,9 +1,9 @@
-package com.hyaline.avoidbrowser.ui.activities.history;
+package com.hyaline.avoidbrowser.ui.fragments.history;
 
 import android.view.View;
 
 import com.hyaline.avoidbrowser.R;
-import com.hyaline.avoidbrowser.ui.activities.history.data.SectionHeader;
+import com.hyaline.avoidbrowser.ui.fragments.history.data.SectionHeader;
 import com.qmuiteam.qmui.alpha.QMUIAlphaTextView;
 import com.qmuiteam.qmui.widget.section.QMUIStickySectionAdapter;
 

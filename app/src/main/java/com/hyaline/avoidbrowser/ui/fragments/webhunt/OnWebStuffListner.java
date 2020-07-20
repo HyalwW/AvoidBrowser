@@ -1,4 +1,4 @@
-package com.hyaline.avoidbrowser.ui.fragments;
+package com.hyaline.avoidbrowser.ui.fragments.webhunt;
 
 /**
  * Created by Wang.Wenhui
@@ -9,6 +9,8 @@ public interface OnWebStuffListner {
     void onLoadStart();
 
     void onLoadFinish();
+
+    void onReceiveUrl(String url);
 
     void onTitleChanged(String title);
 

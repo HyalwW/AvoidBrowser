@@ -1,4 +1,4 @@
-package com.hyaline.avoidbrowser.ui.activities.history.data;
+package com.hyaline.avoidbrowser.ui.fragments.history.data;
 
 import com.hyaline.avoidbrowser.data.beans.BrowseHistoryBean;
 import com.qmuiteam.qmui.widget.section.QMUISection;

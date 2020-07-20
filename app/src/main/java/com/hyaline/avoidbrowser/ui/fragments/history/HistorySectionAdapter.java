@@ -1,4 +1,4 @@
-package com.hyaline.avoidbrowser.ui.activities.history;
+package com.hyaline.avoidbrowser.ui.fragments.history;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import com.hyaline.avoidbrowser.R;
-import com.hyaline.avoidbrowser.ui.activities.history.data.SectionHeader;
-import com.hyaline.avoidbrowser.ui.activities.history.data.SectionItem;
+import com.hyaline.avoidbrowser.ui.fragments.history.data.SectionHeader;
+import com.hyaline.avoidbrowser.ui.fragments.history.data.SectionItem;
 import com.qmuiteam.qmui.widget.section.QMUIDefaultStickySectionAdapter;
 import com.qmuiteam.qmui.widget.section.QMUISection;
 

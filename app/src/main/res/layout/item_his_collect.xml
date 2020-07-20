@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hyaline.avoidbrowser.data.beans.CollectBean" />
+
+        <variable
+            name="viewModel"
+            type="com.hyaline.avoidbrowser.ui.fragments.collection.CollectionsViewModel" />
+    </data>
+
+    <com.qmuiteam.qmui.layout.QMUILinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/his_item_bg"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        app:clickCommand="@{viewModel.onItemClick}"
+        app:clickData="@{item}"
+        app:longClickCommand="@{viewModel.onItemLongClick}"
+        app:longClickData="@{item}">
+
+        <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="5dp"
+            android:src="@drawable/orange_star"
+            app:clickCommand="@{viewModel.onUnCollectClick}"
+            app:clickData="@{item}"
+            app:qmui_border_width="0dp" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/light_gray" />
+
+        <com.qmuiteam.qmui.layout.QMUILinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="@{item.name}"
+                android:textColor="@color/black"
+                android:textSize="18dp" />
+
+            <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+                android:id="@+id/url"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="@{item.url}"
+                android:textColor="@color/light_gray" />
+        </com.qmuiteam.qmui.layout.QMUILinearLayout>
+
+        <com.qmuiteam.qmui.widget.QMUIRadiusImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/more"
+            app:clickCommand="@{viewModel.onMoreClick}"
+            app:clickData="@{item}"
+            app:qmui_border_width="0dp" />
+    </com.qmuiteam.qmui.layout.QMUILinearLayout>
+</layout>

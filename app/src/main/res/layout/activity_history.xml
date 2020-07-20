@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.hyaline.avoidbrowser.ui.activities.history.HistoryViewModel" />
+            type="com.hyaline.avoidbrowser.ui.fragments.history.HistoryViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -40,10 +40,21 @@
             </com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout>
         </com.qmuiteam.qmui.widget.QMUIAppBarLayout>
 
-        <com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout
-            android:id="@+id/section_view"
+        <com.qmuiteam.qmui.layout.QMUILinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+            android:orientation="vertical"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+            <com.qmuiteam.qmui.widget.tab.QMUITabSegment
+                android:id="@+id/tab"
+                android:layout_width="match_parent"
+                android:layout_height="40dp" />
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </com.qmuiteam.qmui.layout.QMUILinearLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

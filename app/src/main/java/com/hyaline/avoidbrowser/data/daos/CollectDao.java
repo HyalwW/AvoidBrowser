@@ -27,4 +27,7 @@ public interface CollectDao {
 
     @Delete
     void delete(CollectBean bean);
+
+    @Query("select * from collectbean where url = :url")
+    CollectBean exist(String url);
 }

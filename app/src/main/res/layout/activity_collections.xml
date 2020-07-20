@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.hyaline.avoidbrowser.ui.activities.collections.CollectionsViewModel" />
+            type="com.hyaline.avoidbrowser.ui.fragments.collection.CollectionsViewModel" />
     </data>
 
     <com.qmuiteam.qmui.layout.QMUIConstraintLayout
