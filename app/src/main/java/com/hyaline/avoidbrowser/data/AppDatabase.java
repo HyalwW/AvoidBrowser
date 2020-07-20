@@ -8,9 +8,11 @@ import androidx.room.RoomDatabase;
 
 import com.hyaline.avoidbrowser.BasicApp;
 import com.hyaline.avoidbrowser.data.beans.BrowseHistoryBean;
+import com.hyaline.avoidbrowser.data.beans.CollectBean;
 import com.hyaline.avoidbrowser.data.beans.SearchHistoryBean;
 import com.hyaline.avoidbrowser.data.beans.UserInfoBean;
 import com.hyaline.avoidbrowser.data.daos.BrowseHistoryDao;
+import com.hyaline.avoidbrowser.data.daos.CollectDao;
 import com.hyaline.avoidbrowser.data.daos.SearchHistoryDao;
 import com.hyaline.avoidbrowser.data.daos.UserInfoDao;
 
@@ -19,7 +21,7 @@ import com.hyaline.avoidbrowser.data.daos.UserInfoDao;
  * Date: 2020/7/9
  * Description: blablabla
  */
-@Database(entities = {UserInfoBean.class, SearchHistoryBean.class, BrowseHistoryBean.class}, version = 1, exportSchema = false)
+@Database(entities = {UserInfoBean.class, SearchHistoryBean.class, BrowseHistoryBean.class, CollectBean.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase database;
 
@@ -31,6 +33,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
     //浏览历史
     public abstract BrowseHistoryDao browseHistoryDao();
+
+    //收藏
+    public abstract CollectDao collectDao();
 
 
     public static AppDatabase getDatabase() {

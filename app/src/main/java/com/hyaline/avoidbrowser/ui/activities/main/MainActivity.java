@@ -64,6 +64,19 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
         initEvents();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null) {
+            switch (intent.getStringExtra("extra")) {
+                case "fromHistory":
+                    String url = intent.getStringExtra("url");
+                    go2Fragment(url, null);
+                    break;
+            }
+        }
+    }
+
     private void initEvents() {
         initTop();
         viewModel.getGoSettingEvent().observe(this, o -> startActivity(new Intent(this, SettingActivity.class)));
@@ -212,7 +225,7 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
         if (menuSheet == null) {
             QMUIBottomSheet.BottomGridSheetBuilder builder = new QMUIBottomSheet.BottomGridSheetBuilder(this);
             builder.addItem(R.drawable.history, "历史记录", 0, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE);
-            builder.addItem(R.drawable.collections, "书签/收藏", 0, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE);
+            builder.addItem(R.drawable.collections, "书签/收藏", 1, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE);
             builder.addItem(R.drawable.download, "下载", 2, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE);
             builder.addItem(R.drawable.mode_night, "夜间模式", 3, QMUIBottomSheet.BottomGridSheetBuilder.FIRST_LINE);
             builder.addItem(R.drawable.set, "设置", 4, QMUIBottomSheet.BottomGridSheetBuilder.SECOND_LINE);
@@ -237,6 +250,7 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
                         finish();
                         break;
                 }
+                dialog.dismiss();
             });
             menuSheet = builder.build();
         }

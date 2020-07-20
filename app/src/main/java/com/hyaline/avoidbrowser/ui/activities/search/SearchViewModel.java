@@ -158,4 +158,8 @@ public class SearchViewModel extends BaseViewModel {
         shItems.clear();
         shItems.addAll(searchHistoryBeans);
     }
+
+    public void deleteHistory(int position) {
+        searchHistoryDao.delete(shItems.remove(position));
+    }
 }

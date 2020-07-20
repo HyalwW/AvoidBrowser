@@ -5,10 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.hyaline.avoidbrowser.BR;
 import com.hyaline.avoidbrowser.R;
 import com.hyaline.avoidbrowser.base.BaseActivity;
 import com.hyaline.avoidbrowser.databinding.ActivitySearchBinding;
+import com.hyaline.avoidbrowser.utils.ClipboardUtils;
+import com.qmuiteam.qmui.recyclerView.QMUIRVItemSwipeAction;
 
 import java.util.regex.Pattern;
 
@@ -35,12 +40,26 @@ public class SearchActivity extends BaseActivity<SearchViewModel, ActivitySearch
     protected void initView() {
         viewModel.getSearchEvent().observe(this, this::setResultAndFinish);
         viewModel.getCopyEvent().observe(this, s -> {
-            ClipboardManager clipboard = (ClipboardManager) getApplicationContext().getSystemService(Context.CLIPBOARD_SERVICE);
-            android.content.ClipData clip = android.content.ClipData.newPlainText(s, s);
-            clipboard.setPrimaryClip(clip);
+            ClipboardUtils.copyText(s);
             Toast.makeText(this, "网址复制成功~", Toast.LENGTH_SHORT).show();
         });
         viewModel.getKeyEvent().observe(this, this::setResultAndFinish);
+        QMUIRVItemSwipeAction action = new QMUIRVItemSwipeAction(true, new QMUIRVItemSwipeAction.Callback() {
+            @Override
+            public int getSwipeDirection(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                return QMUIRVItemSwipeAction.SWIPE_LEFT;
+            }
+
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                super.onSwiped(viewHolder, direction);
+                int adapterPosition = viewHolder.getAdapterPosition();
+                viewModel.deleteHistory(adapterPosition);
+            }
+
+        });
+        action.attachToRecyclerView(dataBinding.list);
     }
 
     private void setResultAndFinish(String keyword) {

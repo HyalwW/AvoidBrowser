@@ -14,10 +14,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.hyaline.avoidbrowser.BR;
 import com.hyaline.avoidbrowser.R;
 import com.hyaline.avoidbrowser.base.BaseFragment;
+import com.hyaline.avoidbrowser.data.AppDatabase;
+import com.hyaline.avoidbrowser.data.beans.BrowseHistoryBean;
+import com.hyaline.avoidbrowser.data.daos.BrowseHistoryDao;
 import com.hyaline.avoidbrowser.databinding.FragmentWebHuntBinding;
 import com.hyaline.avoidbrowser.ui.customviews.LoadingView;
 import com.hyaline.avoidbrowser.ui.customviews.NestedWebView;
 import com.hyaline.avoidbrowser.ui.fragments.OnWebStuffListner;
+import com.hyaline.avoidbrowser.utils.ThreadPool;
 import com.qmuiteam.qmui.util.QMUIDirection;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUIViewHelper;
@@ -39,6 +43,19 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
     private boolean clearHistory, isRedirect;
     private OnWebStuffListner loadlistner;
     private PageInfo pageInfo;
+    private BrowseHistoryDao browseHistoryDao;
+    private Runnable saveHistoryRun = () -> {
+        BrowseHistoryBean exist = browseHistoryDao.exist(pageInfo.getUrl());
+        if (exist == null) {
+            BrowseHistoryBean bean = new BrowseHistoryBean();
+            bean.setUrl(pageInfo.getUrl());
+            bean.setTitle(pageInfo.getTitleStr());
+            browseHistoryDao.insert(bean);
+        } else {
+            exist.setTime(System.currentTimeMillis());
+            browseHistoryDao.update(exist);
+        }
+    };
 
     @Override
     protected int layoutId() {
@@ -65,6 +82,7 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
         if (arguments != null) {
             pageInfo.setUrl(arguments.getString("url"));
         }
+        browseHistoryDao = AppDatabase.getDatabase().browseHistoryDao();
     }
 
     @Override
@@ -155,6 +173,7 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
                     loadlistner.onLoadFinish();
                 }
                 pageInfo.setUrl(s);
+                ThreadPool.fixed().execute(saveHistoryRun);
                 if (webView.getHeight() < loadlistner.getScrollHeight()) {
                     ViewGroup.LayoutParams params = webView.getLayoutParams();
                     params.height = loadlistner.getScrollHeight();

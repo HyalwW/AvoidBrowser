@@ -16,13 +16,11 @@ public class ScaleLinearLayout extends LinearLayout {
     private static final float minScale = 0.95f;
 
     public ScaleLinearLayout(Context context) {
-        super(context);
-        init();
+        this(context, null);
     }
 
     public ScaleLinearLayout(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        init();
+        this(context, attrs, 0);
     }
 
     public ScaleLinearLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -31,6 +29,7 @@ public class ScaleLinearLayout extends LinearLayout {
     }
 
     private void init() {
+        setClickable(true);
         animator = new ValueAnimator();
         animator.setDuration(200);
         animator.addUpdateListener(animation -> {
@@ -53,7 +52,6 @@ public class ScaleLinearLayout extends LinearLayout {
         float ex = event.getX(), ey = event.getY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                isOut = false;
                 zoomOut();
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -79,7 +77,8 @@ public class ScaleLinearLayout extends LinearLayout {
     }
 
     private void zoomOut() {
-        scale = 0.9999f;
+        isOut = false;
+        scale = 0.999999f;
         animator.cancel();
         animator.setFloatValues(scale, minScale);
         animator.start();

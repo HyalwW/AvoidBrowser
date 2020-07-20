@@ -34,7 +34,9 @@
         </activity>
         <activity android:name=".ui.activities.search.SearchActivity" />
         <activity android:name=".ui.activities.set.SettingActivity" />
-        <activity android:name=".ui.activities.main.MainActivity" />
+        <activity
+            android:name=".ui.activities.main.MainActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".ui.activities.history.HistoryActivity" />
         <activity android:name=".ui.activities.collections.CollectionsActivity" />
     </application>

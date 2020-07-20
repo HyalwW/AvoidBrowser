@@ -23,6 +23,9 @@ public interface SearchHistoryDao {
     @Query("select * from SearchHistoryBean order by updateTime desc limit :count")
     List<SearchHistoryBean> loadHistoriesByTime(int count);
 
+    @Query("select * from SearchHistoryBean order by updateTime desc")
+    List<SearchHistoryBean> loadAllHistoriesByTime();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(SearchHistoryBean bean);
 

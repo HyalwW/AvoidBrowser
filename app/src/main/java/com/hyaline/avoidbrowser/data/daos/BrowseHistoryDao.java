@@ -5,6 +5,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.hyaline.avoidbrowser.data.beans.BrowseHistoryBean;
 
@@ -29,4 +30,10 @@ public interface BrowseHistoryDao {
 
     @Query("delete from browsehistorybean")
     void deleteAll();
+
+    @Query("select * from browsehistorybean where url = :url")
+    BrowseHistoryBean exist(String url);
+
+    @Update
+    void update(BrowseHistoryBean bean);
 }

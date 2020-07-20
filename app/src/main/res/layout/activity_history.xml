@@ -1,16 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.hyaline.avoidbrowser.ui.activities.history.HistoryViewMdodel" />
+            type="com.hyaline.avoidbrowser.ui.activities.history.HistoryViewModel" />
     </data>
 
-    <com.qmuiteam.qmui.layout.QMUIConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/search_bg">
-    </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
+
+        <com.qmuiteam.qmui.widget.QMUIAppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout
+                android:id="@+id/collapse_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/top_color"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    app:qmui_layout_collapseMode="parallax"
+                    app:qmui_layout_collapseParallaxMultiplier="0.5" />
+
+                <com.qmuiteam.qmui.widget.QMUITopBar
+                    android:id="@+id/top_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/qmui_topbar_height"
+                    app:qmui_layout_collapseMode="pin"
+                    app:qmui_topbar_left_back_drawable_id="@drawable/qmui_icon_topbar_back" />
+            </com.qmuiteam.qmui.widget.QMUICollapsingTopBarLayout>
+        </com.qmuiteam.qmui.widget.QMUIAppBarLayout>
+
+        <com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout
+            android:id="@+id/section_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

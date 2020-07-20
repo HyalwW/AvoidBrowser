@@ -1,5 +1,6 @@
 package com.hyaline.avoidbrowser.data.beans;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -45,5 +46,14 @@ public class SearchHistoryBean {
 
     public void setUpdateTime(long updateTime) {
         this.updateTime = updateTime;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        SearchHistoryBean target = (SearchHistoryBean) obj;
+        return id == target.id && keyword.equals(target.keyword);
     }
 }

@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.blankj.utilcode.util.Utils;
 import com.google.gson.Gson;
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager;
 import com.tencent.smtt.sdk.QbSdk;
@@ -21,6 +22,7 @@ public class BasicApp extends Application {
     public void onCreate() {
         super.onCreate();
         gson = new Gson();
+        Utils.init(this);
         context = this;
         QMUISwipeBackActivityManager.init(this);
         QbSdk.initX5Environment(this, new QbSdk.PreInitCallback() {

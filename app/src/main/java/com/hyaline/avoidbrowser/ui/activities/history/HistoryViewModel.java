@@ -6,15 +6,19 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 
 import com.hyaline.avoidbrowser.base.BaseViewModel;
+import com.hyaline.avoidbrowser.data.AppDatabase;
+import com.hyaline.avoidbrowser.data.daos.BrowseHistoryDao;
 
-public class HistoryViewMdodel extends BaseViewModel {
-    public HistoryViewMdodel(@NonNull Application application) {
+public class HistoryViewModel extends BaseViewModel {
+    private BrowseHistoryDao dao;
+
+    public HistoryViewModel(@NonNull Application application) {
         super(application);
     }
 
     @Override
     protected void onCreate(Application application) {
-
+        dao = AppDatabase.getDatabase().browseHistoryDao();
     }
 
     @Override
@@ -25,5 +29,9 @@ public class HistoryViewMdodel extends BaseViewModel {
     @Override
     protected void parseIntent(Intent intent) {
 
+    }
+
+    public BrowseHistoryDao getDao() {
+        return dao;
     }
 }
