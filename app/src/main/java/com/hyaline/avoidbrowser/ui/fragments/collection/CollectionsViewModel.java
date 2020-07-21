@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableList;
 
 import com.hyaline.avoidbrowser.BR;
@@ -20,11 +19,12 @@ import com.hyaline.avoidbrowser.utils.ThreadPool;
 import java.util.List;
 
 import me.tatarka.bindingcollectionadapter2.ItemBinding;
+import me.tatarka.bindingcollectionadapter2.collections.AsyncDiffObservableList;
 
 public class CollectionsViewModel extends BaseViewModel {
     private CollectDao dao;
     private ItemBinding<CollectBean> itemBinding;
-    private ObservableList<CollectBean> items;
+    private AsyncDiffObservableList<CollectBean> items;
 
     private BindingCommand<CollectBean> onItemClick, onItemLongClick, onUnCollectClick, onMoreClick;
     private SingleLiveEvent<CollectBean> clickEvent, longClickEvent, unCollectEvent, moreEvent;
@@ -36,7 +36,7 @@ public class CollectionsViewModel extends BaseViewModel {
     @Override
     protected void onCreate(Application application) {
         dao = AppDatabase.getDatabase().collectDao();
-        items = new ObservableArrayList<>();
+        items = new AsyncDiffObservableList<>(new CollectionCallback());
         itemBinding = ItemBinding.of(BR.item, R.layout.item_his_collect);
         itemBinding.bindExtra(BR.viewModel, this);
         clickEvent = new SingleLiveEvent<>();
@@ -60,8 +60,7 @@ public class CollectionsViewModel extends BaseViewModel {
     }
 
     public void setData(List<CollectBean> list) {
-        items.clear();
-        items.addAll(list);
+        items.update(list);
     }
 
     public CollectDao getDao() {

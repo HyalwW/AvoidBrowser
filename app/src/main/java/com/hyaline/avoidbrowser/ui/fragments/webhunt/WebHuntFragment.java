@@ -72,7 +72,9 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
         if (getActivity() instanceof OnWebStuffListner) {
             loadlistner = (OnWebStuffListner) getActivity();
         }
-        pageInfo = new PageInfo();
+        int hashCode = hashCode();
+        Log.e("wwh", "WebHuntFragment --> onCreate: " + hashCode);
+        pageInfo = new PageInfo(hashCode);
     }
 
     @Override
@@ -140,9 +142,6 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
         webView = new NestedWebView(getActivity());
         ViewGroup.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, loadlistner.getScrollHeight());
         dataBinding.base.addView(webView, 0, params);
-        webView.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-
-        });
     }
 
     private void initClient() {

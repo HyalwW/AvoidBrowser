@@ -24,6 +24,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_margin="5dp"
+            app:qmui_border_width="0dp"
             app:imgBitmap="@{item.icon}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

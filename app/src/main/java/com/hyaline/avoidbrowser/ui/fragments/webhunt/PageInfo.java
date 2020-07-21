@@ -11,16 +11,22 @@ import androidx.databinding.ObservableField;
  * Description: blablabla
  */
 public class PageInfo {
+    private int id;
     private String url;
     private ObservableField<String> title;
     private Bitmap icon;
     private ObservableField<Bitmap> cache;
     private ObservableBoolean isShow;
 
-    public PageInfo() {
+    public PageInfo(int id) {
+        this.id = id;
         title = new ObservableField<>("");
         cache = new ObservableField<>();
         isShow = new ObservableBoolean(true);
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getUrl() {
@@ -59,6 +65,7 @@ public class PageInfo {
     }
 
     public void setCacheBitmap(Bitmap cache) {
+        destroyCache();
         this.cache.set(cache);
     }
 

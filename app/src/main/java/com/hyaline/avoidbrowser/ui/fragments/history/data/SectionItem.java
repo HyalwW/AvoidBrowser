@@ -22,11 +22,11 @@ public class SectionItem implements QMUISection.Model<SectionItem> {
 
     @Override
     public boolean isSameItem(SectionItem other) {
-        return other.item.equals(item);
+        return other.item.getId() == item.getId();
     }
 
     @Override
     public boolean isSameContent(SectionItem other) {
-        return true;
+        return other.item.getUrl().equals(item.getUrl()) && other.item.getTitle().equals(item.getTitle());
     }
 }

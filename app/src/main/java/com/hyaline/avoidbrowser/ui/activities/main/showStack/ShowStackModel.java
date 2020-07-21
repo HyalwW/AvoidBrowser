@@ -1,6 +1,5 @@
 package com.hyaline.avoidbrowser.ui.activities.main.showStack;
 
-import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableList;
 import androidx.lifecycle.ViewModel;
 
@@ -13,17 +12,18 @@ import com.hyaline.avoidbrowser.utils.BindingCommand;
 import java.util.List;
 
 import me.tatarka.bindingcollectionadapter2.ItemBinding;
+import me.tatarka.bindingcollectionadapter2.collections.AsyncDiffObservableList;
 
 public class ShowStackModel extends ViewModel {
     private ItemBinding<PageInfo> pageBinding;
-    private ObservableList<PageInfo> pages;
+    private AsyncDiffObservableList<PageInfo> pages;
     private BindingCommand<PageInfo> onCloseClick, onPageClick;
     private Action<PageInfo> deleteAction, showAction;
     private Action dismissAction;
     private BindingCommand onBlankClick;
 
     public ShowStackModel() {
-        pages = new ObservableArrayList<>();
+        pages = new AsyncDiffObservableList<>(new StackCallback());
         pageBinding = ItemBinding.of(BR.item, R.layout.item_page);
         pageBinding.bindExtra(BR.model, this);
         onCloseClick = new BindingCommand<>(pageInfo -> deleteAction.setValue(pageInfo));
@@ -52,8 +52,7 @@ public class ShowStackModel extends ViewModel {
     }
 
     public void setList(List<PageInfo> list) {
-        pages.clear();
-        pages.addAll(list);
+        pages.update(list);
     }
 
     public Action<PageInfo> getDeleteAction() {

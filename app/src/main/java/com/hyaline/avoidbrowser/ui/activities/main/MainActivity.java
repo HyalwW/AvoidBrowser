@@ -142,6 +142,8 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
 
                 @Override
                 public void onShow(int showPos) {
+                    if (showPos < 0)
+                        return;
                     List<Fragment> fragments = fragmentManager.getFragments();
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                     Fragment fragment = fragments.get(showPos);
@@ -226,6 +228,7 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
     @Override
     public void onLoadStart() {
         viewModel.load(true);
+        viewModel.setIsCollect(false);
     }
 
     @Override
