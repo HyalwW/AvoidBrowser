@@ -1,6 +1,10 @@
 package com.hyaline.avoidbrowser.ui.fragments.collection;
 
 import android.content.Intent;
+import android.text.TextUtils;
+import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.VibrateUtils;
 import com.hyaline.avoidbrowser.BR;
@@ -9,7 +13,10 @@ import com.hyaline.avoidbrowser.base.BaseFragment;
 import com.hyaline.avoidbrowser.data.beans.CollectBean;
 import com.hyaline.avoidbrowser.databinding.FragmentCollectionsBinding;
 import com.hyaline.avoidbrowser.ui.activities.main.MainActivity;
+import com.hyaline.avoidbrowser.ui.dialogs.CollectEditDialog;
+import com.hyaline.avoidbrowser.utils.ThreadPool;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.qmuiteam.qmui.widget.popup.QMUIQuickAction;
 
@@ -17,6 +24,7 @@ import com.qmuiteam.qmui.widget.popup.QMUIQuickAction;
 public class CollectionsFragment extends BaseFragment<CollectionsViewModel, FragmentCollectionsBinding> implements QMUIQuickAction.OnClickListener {
     private QMUIQuickAction popup;
     private CollectBean selectBean;
+    private CollectEditDialog dialog;
 
     @Override
     protected int layoutId() {
@@ -52,7 +60,10 @@ public class CollectionsFragment extends BaseFragment<CollectionsViewModel, Frag
     private void showPopup(CollectBean bean) {
         selectBean = bean;
         checkPopup();
-        popup.show(dataBinding.recyclerView.findViewHolderForAdapterPosition(viewModel.getItems().indexOf(bean)).itemView);
+        RecyclerView.ViewHolder viewHolder = dataBinding.recyclerView.findViewHolderForAdapterPosition(viewModel.getItems().indexOf(bean));
+        if (viewHolder != null) {
+            popup.show(viewHolder.itemView);
+        }
     }
 
     private void checkPopup() {
@@ -77,11 +88,38 @@ public class CollectionsFragment extends BaseFragment<CollectionsViewModel, Frag
         }
         switch (position) {
             case 0:
+                quickAction.dismiss();
+                checkDialog();
+                dialog.show(true);
                 break;
             case 1:
                 viewModel.delete(selectBean);
                 quickAction.dismiss();
                 break;
+        }
+    }
+
+    private void checkDialog() {
+        if (dialog == null) {
+            dialog = new CollectEditDialog(getContext(), "编辑书签", "在此输入书签名")
+                    .listener(new CollectEditDialog.OnDialogListener() {
+                        @Override
+                        public void onCancel(QMUIDialog dialog) {
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onConfirm(QMUIDialog dialog, String text) {
+                            if (!TextUtils.isEmpty(text)) {
+                                dialog.dismiss();
+                                selectBean.setName(text);
+                                Toast.makeText(getContext(), "书签名已修改", Toast.LENGTH_SHORT).show();
+                                ThreadPool.fixed().execute(() -> viewModel.getDao().update(selectBean));
+                            } else {
+                                Toast.makeText(getContext(), "书签名不能为空", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
         }
     }
 }

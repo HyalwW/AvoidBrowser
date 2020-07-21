@@ -1,6 +1,7 @@
 package com.hyaline.avoidbrowser.ui.fragments.collection;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DiffUtil;
@@ -35,6 +36,7 @@ public class CollectionCallback extends DiffUtil.ItemCallback<CollectBean> {
         } else if (!TextUtils.isEmpty(oldUrl) && !TextUtils.isEmpty(newUrl) && oldUrl.equals(newUrl)) {
             checkUrl = true;
         }
+        Log.e("wwh", "CollectionCallback --> areContentsTheSame: " + oldItem.getUrl() + " " + checkName + " " + checkUrl);
         return checkName && checkUrl;
     }
 }

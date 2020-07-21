@@ -6,7 +6,7 @@
 
         <variable
             name="model"
-            type="com.hyaline.avoidbrowser.ui.activities.main.showStack.ShowStackModel" />
+            type="com.hyaline.avoidbrowser.ui.dialogs.showStack.ShowStackModel" />
 
         <variable
             name="item"

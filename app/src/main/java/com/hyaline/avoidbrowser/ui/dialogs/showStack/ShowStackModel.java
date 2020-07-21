@@ -1,4 +1,4 @@
-package com.hyaline.avoidbrowser.ui.activities.main.showStack;
+package com.hyaline.avoidbrowser.ui.dialogs.showStack;
 
 import androidx.databinding.ObservableList;
 import androidx.lifecycle.ViewModel;

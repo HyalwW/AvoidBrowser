@@ -1,4 +1,4 @@
-package com.hyaline.avoidbrowser.ui.activities.main.showStack;
+package com.hyaline.avoidbrowser.ui.dialogs.showStack;
 
 import android.app.Activity;
 import android.os.Bundle;

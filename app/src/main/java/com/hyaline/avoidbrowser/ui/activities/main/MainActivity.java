@@ -2,7 +2,9 @@ package com.hyaline.avoidbrowser.ui.activities.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -19,25 +21,28 @@ import com.hyaline.avoidbrowser.data.beans.CollectBean;
 import com.hyaline.avoidbrowser.data.daos.CollectDao;
 import com.hyaline.avoidbrowser.databinding.ActivityMainBinding;
 import com.hyaline.avoidbrowser.ui.activities.history.HistoryActivity;
-import com.hyaline.avoidbrowser.ui.activities.main.showStack.ShowStackDialog;
-import com.hyaline.avoidbrowser.ui.activities.main.showStack.ShowStackModel;
 import com.hyaline.avoidbrowser.ui.activities.search.SearchActivity;
 import com.hyaline.avoidbrowser.ui.activities.set.SettingActivity;
+import com.hyaline.avoidbrowser.ui.dialogs.CollectEditDialog;
+import com.hyaline.avoidbrowser.ui.dialogs.showStack.ShowStackDialog;
+import com.hyaline.avoidbrowser.ui.dialogs.showStack.ShowStackModel;
 import com.hyaline.avoidbrowser.ui.fragments.webhunt.OnWebStuffListner;
 import com.hyaline.avoidbrowser.ui.fragments.webhunt.PageInfo;
 import com.hyaline.avoidbrowser.ui.fragments.webhunt.WebHuntFragment;
 import com.hyaline.avoidbrowser.utils.ThreadPool;
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBinding> implements OnWebStuffListner {
+public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBinding> implements OnWebStuffListner, TextWatcher {
 
     private FragmentManager fragmentManager;
     private WebHuntFragment current;
     private String currentUrl;
     private QMUIBottomSheet menuSheet;
+    private CollectEditDialog collectDialog;
     private CollectDao collectDao;
 
     static final String BACK = "后退";
@@ -47,6 +52,8 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
     static final String STACK = "切换";
 
     private ShowStackDialog dialog;
+    private String collectStr;
+    private boolean isUrlCollected;
 
     @Override
     protected int layoutId() {
@@ -175,10 +182,12 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
                 ThreadPool.fixed().execute(() -> collectDao.insert(bean));
                 viewModel.setIsCollect(true);
                 Toast.makeText(this, "收藏成功~", Toast.LENGTH_SHORT).show();
+                isUrlCollected = true;
             } else {
                 ThreadPool.fixed().execute(() -> collectDao.delete(exist));
                 viewModel.setIsCollect(false);
                 Toast.makeText(this, "取消收藏成功~", Toast.LENGTH_SHORT).show();
+                isUrlCollected = false;
             }
         });
         viewModel.getRefreshEvent().observe(this, o -> {
@@ -239,7 +248,8 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
     @Override
     public void onReceiveUrl(String url) {
         currentUrl = url;
-        viewModel.setIsCollect(collectDao.exist(url) != null);
+        isUrlCollected = collectDao.exist(url) != null;
+        viewModel.setIsCollect(isUrlCollected);
     }
 
     @Override
@@ -268,6 +278,12 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
                         startActivity(new Intent(this, HistoryActivity.class));
                         break;
                     case 1:
+                        if (!isUrlCollected) {
+                            checkCollectDialog();
+                            collectDialog.show();
+                        } else {
+                            Toast.makeText(this, "该网页已经收藏！", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                     case 2:
                         break;
@@ -286,10 +302,51 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
         }
     }
 
+    private void checkCollectDialog() {
+        if (collectDialog == null) {
+            collectDialog = new CollectEditDialog(this, "保存书签", "在此输入书签名")
+                    .listener(new CollectEditDialog.OnDialogListener() {
+                        @Override
+                        public void onCancel(QMUIDialog dialog) {
+                            dialog.dismiss();
+                        }
+
+                        @Override
+                        public void onConfirm(QMUIDialog dialog, String text) {
+                            dialog.dismiss();
+                            Toast.makeText(MainActivity.this, "网页书签收藏成功~", Toast.LENGTH_SHORT).show();
+                            viewModel.setIsCollect(true);
+                            isUrlCollected = true;
+                            ThreadPool.fixed().execute(() -> {
+                                CollectBean bean = new CollectBean();
+                                bean.setName(TextUtils.isEmpty(collectStr) ? viewModel.getSearchText().get() : collectStr);
+                                bean.setUrl(currentUrl);
+                                collectDao.insert(bean);
+                                collectStr = "";
+                            });
+                        }
+                    });
+        }
+    }
+
     @Override
     public void onBackPressed() {
         if (backHandler == null || !backHandler.onBackPressed()) {
             moveTaskToBack(true);
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        collectStr = s.toString();
     }
 }
