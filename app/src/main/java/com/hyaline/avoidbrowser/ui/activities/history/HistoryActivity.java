@@ -46,7 +46,8 @@ public class HistoryActivity extends BaseActivity<HistoryViewModel, ActivityHist
         collapse.setCollapsedTitleGravity(Gravity.CENTER);
         collapse.setExpandedTitleGravity(Gravity.CENTER);
         collapse.setExpandedTitleTypeface(Typeface.DEFAULT_BOLD);
-        collapse.setExpandedTitleMarginTop(QMUIDisplayHelper.dp2px(this, 10));
+        collapse.setExpandedTitleColor(getColor(R.color.tomato));
+        collapse.setExpandedTitleMarginTop(QMUIDisplayHelper.dp2px(this, 40));
         dataBinding.topBar.setTitle("浏览历史");
         dataBinding.topBar.showTitleView(false);
         dataBinding.topBar.setBottomDividerAlpha(0);

@@ -79,15 +79,17 @@
             app:layout_constraintTop_toBottomOf="@id/top_base"
             app:viewVisible="@{!TextUtils.isEmpty(viewModel.tempUrl)}">
 
-            <TextView
+            <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="10dp"
                 android:layout_weight="8.5"
                 android:ellipsize="marquee"
+                android:gravity="center_vertical"
                 android:singleLine="true"
-                android:text="@{viewModel.tempUrl}" />
+                android:text="@{viewModel.tempUrl}"
+                app:clickCommand="@{viewModel.onCPUrl}" />
 
             <View
                 android:layout_width="1dp"
@@ -106,7 +108,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/search_history"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="400dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
@@ -128,16 +130,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.hyaline.avoidbrowser.ui.customviews.MaxHeightRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginTop="2dp"
                 app:gapv="@{3}"
                 app:itemBinding="@{viewModel.shiBinding}"
                 app:items="@{viewModel.shItems}"
-                app:layout_constraintTop_toBottomOf="@id/clear_his"
-                app:maxHeight="300dp" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/clear_his" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
 </layout>

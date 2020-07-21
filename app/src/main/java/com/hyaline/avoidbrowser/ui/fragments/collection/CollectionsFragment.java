@@ -2,6 +2,8 @@ package com.hyaline.avoidbrowser.ui.fragments.collection;
 
 import android.content.Intent;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,13 +56,14 @@ public class CollectionsFragment extends BaseFragment<CollectionsViewModel, Frag
             showPopup(bean);
         });
         viewModel.getMoreEvent().observe(this, this::showPopup);
-        viewModel.getUnCollectEvent().observe(this, bean -> selectBean = null);
+        viewModel.getUnCollectEvent().observe(this, bean -> selectBean = bean);
     }
 
     private void showPopup(CollectBean bean) {
         selectBean = bean;
         checkPopup();
-        RecyclerView.ViewHolder viewHolder = dataBinding.recyclerView.findViewHolderForAdapterPosition(viewModel.getItems().indexOf(bean));
+        int position = viewModel.getItems().indexOf(bean);
+        RecyclerView.ViewHolder viewHolder = dataBinding.recyclerView.findViewHolderForAdapterPosition(position);
         if (viewHolder != null) {
             popup.show(viewHolder.itemView);
         }
@@ -112,9 +115,12 @@ public class CollectionsFragment extends BaseFragment<CollectionsViewModel, Frag
                         public void onConfirm(QMUIDialog dialog, String text) {
                             if (!TextUtils.isEmpty(text)) {
                                 dialog.dismiss();
-                                selectBean.setName(text);
+                                CollectBean bean = new CollectBean();
+                                bean.setId(selectBean.getId());
+                                bean.setUrl(selectBean.getUrl());
+                                bean.setName(text);
                                 Toast.makeText(getContext(), "书签名已修改", Toast.LENGTH_SHORT).show();
-                                ThreadPool.fixed().execute(() -> viewModel.getDao().update(selectBean));
+                                ThreadPool.fixed().execute(() -> viewModel.getDao().update(bean));
                             } else {
                                 Toast.makeText(getContext(), "书签名不能为空", Toast.LENGTH_SHORT).show();
                             }

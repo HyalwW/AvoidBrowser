@@ -1,7 +1,5 @@
 package com.hyaline.avoidbrowser.ui.activities.search;
 
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
@@ -31,9 +29,7 @@ public class SearchActivity extends BaseActivity<SearchViewModel, ActivitySearch
 
     @Override
     protected void initData() {
-        viewModel.getSearchHistoryDao().loadAllLiveHistoriesByTime().observe(this, searchHistoryBeans -> {
-            viewModel.setSearchHistoryBeans(searchHistoryBeans);
-        });
+        viewModel.getSearchHistoryDao().loadAllLiveHistoriesByTime().observe(this, searchHistoryBeans -> viewModel.setSearchHistoryBeans(searchHistoryBeans));
     }
 
     @Override

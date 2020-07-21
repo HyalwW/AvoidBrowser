@@ -7,6 +7,8 @@
         <variable
             name="viewModel"
             type="com.hyaline.avoidbrowser.ui.fragments.collection.CollectionsViewModel" />
+
+        <import type="com.hyaline.avoidbrowser.R" />
     </data>
 
     <com.qmuiteam.qmui.layout.QMUIConstraintLayout
@@ -22,7 +24,36 @@
             android:layout_marginEnd="10dp"
             app:itemBinding="@{viewModel.itemBinding}"
             app:items="@{viewModel.items}"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:viewVisible="@{viewModel.items.size() > 0}" />
+
+        <ImageView
+            android:id="@+id/empty_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/empty_history"
+            app:hideAnim="@{R.anim.pop_out}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.19"
+            app:showAnim="@{R.anim.pop_in}"
+            app:viewVisible="@{viewModel.items.size() == 0}" />
+
+        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="你还没有书签，快去探索吧~"
+            android:textColor="@color/alpha_white"
+            android:textSize="18dp"
+            app:hideAnim="@{R.anim.pop_out}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/empty_img"
+            app:showAnim="@{R.anim.pop_in}"
+            app:viewVisible="@{viewModel.items.size() == 0}" />
     </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
 
 </layout>

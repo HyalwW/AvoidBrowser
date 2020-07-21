@@ -42,11 +42,25 @@ public class CollectionsViewModel extends BaseViewModel {
         clickEvent = new SingleLiveEvent<>();
         onItemClick = new BindingCommand<>(bean -> clickEvent.setValue(bean));
         longClickEvent = new SingleLiveEvent<>();
-        onItemLongClick = new BindingCommand<>(bean -> longClickEvent.setValue(bean));
+        onItemLongClick = new BindingCommand<>(bean -> {
+            for (CollectBean item : items) {
+                if (item.equals(bean)) {
+                    longClickEvent.setValue(item);
+                    return;
+                }
+            }
+        });
         unCollectEvent = new SingleLiveEvent<>();
         onUnCollectClick = new BindingCommand<>(bean -> unCollectEvent.setValue(bean));
         moreEvent = new SingleLiveEvent<>();
-        onMoreClick = new BindingCommand<>(bean -> moreEvent.setValue(bean));
+        onMoreClick = new BindingCommand<>(bean -> {
+            for (CollectBean item : items) {
+                if (item.equals(bean)) {
+                    moreEvent.setValue(item);
+                    return;
+                }
+            }
+        });
     }
 
     @Override

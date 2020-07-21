@@ -88,7 +88,7 @@ public class HistoryFragment extends BaseFragment<HistoryViewModel, FragmentHist
         dataBinding.sectionView.getStickySectionWrapView().setBackgroundColor(getResources().getColor(R.color.app_start, null));
         dataBinding.sectionView.setAdapter(adapter);
         dataBinding.sectionView.setLayoutManager(new LinearLayoutManager(getContext()));
-        viewModel.getDao().loadLiveHistoriesBytime(50).observe(this, browseHistoryBeans -> {
+        viewModel.getDao().loadLiveHistoriesBytime().observe(this, browseHistoryBeans -> {
             Map<Long, List<SectionItem>> map = new LinkedHashMap<>();
             for (BrowseHistoryBean historyBean : browseHistoryBeans) {
                 Long dayStart = getDayStart(historyBean.getTime());
@@ -106,6 +106,7 @@ public class HistoryFragment extends BaseFragment<HistoryViewModel, FragmentHist
                 QMUISection<SectionHeader, SectionItem> section = new QMUISection<>(header, entry.getValue(), false);
                 list.add(section);
             }
+            viewModel.setIsEmpty(list.isEmpty());
             adapter.setData(list);
         });
     }

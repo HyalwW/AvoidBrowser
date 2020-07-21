@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableArrayList;
 import androidx.databinding.ObservableField;
 import androidx.databinding.ObservableList;
 
@@ -22,6 +21,7 @@ import com.hyaline.avoidbrowser.utils.ThreadPool;
 import java.util.List;
 
 import me.tatarka.bindingcollectionadapter2.ItemBinding;
+import me.tatarka.bindingcollectionadapter2.collections.AsyncDiffObservableList;
 
 /**
  * Created by Wang.Wenhui
@@ -30,12 +30,12 @@ import me.tatarka.bindingcollectionadapter2.ItemBinding;
  */
 public class SearchViewModel extends BaseViewModel {
     private ObservableField<String> keyword, tempUrl;
-    private BindingCommand clearEdit, onSearchClick, onCopyClick;
+    private BindingCommand clearEdit, onSearchClick, onCopyClick, onCPUrl;
     private SingleLiveEvent<String> searchEvent, copyEvent, keyEvent;
 
     private BindingCommand<SearchHistoryBean> onSearchItemDelete, onSearchItemUp, onSearchItemClick;
 
-    private ObservableList<SearchHistoryBean> shItems;
+    private AsyncDiffObservableList<SearchHistoryBean> shItems;
     private ItemBinding<SearchHistoryBean> shiBinding;
 
     private SearchHistoryDao searchHistoryDao;
@@ -72,9 +72,13 @@ public class SearchViewModel extends BaseViewModel {
             copyEvent.setValue(tempUrl.get());
             tempUrl.set("");
         });
+        onCPUrl = new BindingCommand(() -> {
+            keyword.set(tempUrl.get());
+            tempUrl.set("");
+        });
         shiBinding = ItemBinding.of(BR.item, R.layout.item_search_history);
         shiBinding.bindExtra(BR.viewModel, this);
-        shItems = new ObservableArrayList<>();
+        shItems = new AsyncDiffObservableList<>(new SearchCallback());
         onSearchItemDelete = new BindingCommand<>(bean -> ThreadPool.fixed().execute(() -> searchHistoryDao.delete(bean)));
         onSearchItemUp = new BindingCommand<>(bean -> keyword.set(bean.getKeyword()));
         keyEvent = new SingleLiveEvent<>();
@@ -154,12 +158,15 @@ public class SearchViewModel extends BaseViewModel {
         return onSearchItemClick;
     }
 
+    public BindingCommand getOnCPUrl() {
+        return onCPUrl;
+    }
+
     public void setSearchHistoryBeans(List<SearchHistoryBean> searchHistoryBeans) {
-        shItems.clear();
-        shItems.addAll(searchHistoryBeans);
+        shItems.update(searchHistoryBeans);
     }
 
     public void deleteHistory(int position) {
-        searchHistoryDao.delete(shItems.remove(position));
+        ThreadPool.fixed().execute(() -> searchHistoryDao.delete(shItems.get(position)));
     }
 }

@@ -1,5 +1,6 @@
 package com.hyaline.avoidbrowser.data.beans;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -32,5 +33,14 @@ public class CollectBean {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj instanceof CollectBean) {
+            CollectBean other = (CollectBean) obj;
+            return id == other.getId();
+        }
+        return false;
     }
 }

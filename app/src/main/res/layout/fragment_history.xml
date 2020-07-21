@@ -1,16 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
         <variable
             name="viewModel"
             type="com.hyaline.avoidbrowser.ui.fragments.history.HistoryViewModel" />
+
+        <import type="com.hyaline.avoidbrowser.R" />
     </data>
 
-    <com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout
-        android:id="@+id/section_view"
+    <com.qmuiteam.qmui.layout.QMUIConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <com.qmuiteam.qmui.widget.section.QMUIStickySectionLayout
+            android:id="@+id/section_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:viewVisible="@{!viewModel.isEmpty}" />
+
+        <ImageView
+            android:id="@+id/empty_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/empty_collections"
+            app:hideAnim="@{R.anim.pop_out}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.2"
+            app:showAnim="@{R.anim.pop_in}"
+            app:viewVisible="@{viewModel.isEmpty}" />
+
+        <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="您还未浏览任何网页"
+            android:textColor="@color/alpha_white"
+            android:textSize="18dp"
+            app:hideAnim="@{R.anim.pop_out}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/empty_img"
+            app:showAnim="@{R.anim.pop_in}"
+            app:viewVisible="@{viewModel.isEmpty}" />
+    </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
 
 </layout>

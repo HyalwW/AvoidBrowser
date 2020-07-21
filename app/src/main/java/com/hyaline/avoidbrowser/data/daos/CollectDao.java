@@ -16,7 +16,7 @@ public interface CollectDao {
     @Query("select * from collectbean limit :count")
     LiveData<List<CollectBean>> loadLiveCollections(int count);
 
-    @Query("select * from collectbean")
+    @Query("select * from collectbean order by id desc")
     LiveData<List<CollectBean>> loadLiveCollections();
 
     @Insert
