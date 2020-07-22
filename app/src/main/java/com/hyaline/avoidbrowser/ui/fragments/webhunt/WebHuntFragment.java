@@ -19,6 +19,7 @@ import com.hyaline.avoidbrowser.data.AppDatabase;
 import com.hyaline.avoidbrowser.data.beans.BrowseHistoryBean;
 import com.hyaline.avoidbrowser.data.daos.BrowseHistoryDao;
 import com.hyaline.avoidbrowser.databinding.FragmentWebHuntBinding;
+import com.hyaline.avoidbrowser.ui.activities.ImageViewActivity;
 import com.hyaline.avoidbrowser.ui.activities.main.MainActivity;
 import com.hyaline.avoidbrowser.ui.customviews.LoadingView;
 import com.hyaline.avoidbrowser.ui.customviews.NestedWebView;
@@ -206,6 +207,9 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
                                 ToastUtils.showShort("图片地址复制成功~");
                                 break;
                             case "查看图片":
+                                Intent intent = new Intent(getContext(), ImageViewActivity.class);
+                                intent.putExtra("imageUrl", url);
+                                startActivity(intent);
                                 break;
                             case "保存图片":
                                 viewModel.saveImage(url);

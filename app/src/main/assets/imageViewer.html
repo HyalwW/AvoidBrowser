@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>图片查看</title>
+        <style type="text/css">
+                body {
+				background-color: #000000;
+                }
+                .image {
+                    position: absolute;
+                    top:50%;
+                    left:50%;
+                    width: 100%;
+                    transform: translate(-50%,-50%);
+                }
+                .imgzoom_pack {
+                    width: 100%;
+                    height: 100%;
+                    position: fixed;
+                    top: 0px;
+                    bottom: 0px;
+                    left: 0px;
+                    right: 0px;
+                    background: rgba(0, 0, 0, .7);
+                }
+
+                .imgzoom_pack .imgzoom_x {
+                    color: #fff;
+                    height: 30px;
+                    width: 30px;
+                    line-height: 30px;
+                    background: #000;
+                    text-align: center;
+                    position: absolute;
+                    right: 5px;
+                    top: 5px;
+                    z-index: 10;
+                    cursor: pointer;
+                }
+
+                .imgzoom_pack .imgzoom_img {
+                    width: 100%;
+                    height: 100%;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    overflow: hidden;
+                }
+
+                .imgzoom_pack .imgzoom_img img {
+                    width: 100%;
+                    position: absolute;
+                    top: 50%;
+                }
+
+        </style>
+        <script src="scale.js"></script>
+        <script src="jquery.js"></script>
+        <script>
+            function showImage(src) {
+                 $(".image").attr("src", src)
+                 alert(src)
+            }
+            $(function () {
+                $(".content img").on("click", function () {
+                $(".imgzoom_img>img").attr("src", $(this).attr("src"));
+                $(".imgzoom_img>img").css("marginTop", "-" + ($(this).height() / 2) + "px");
+                $(".imgzoom_pack").show();
+            });
+            $(".imgzoom_x").on("click", function () {
+                $(".imgzoom_pack").hide();
+                $(".imgzoom_img>img").attr("src", "");
+            });
+
+            window.ImagesZoom.init({
+                "elem": ".content"
+            })
+        })
+        </script>
+    </head>
+    <body>
+    <div class="content">
+        <img class="image" src='https://hbimg.huabanimg.com/357d23d074c2954d568d1a6f86a5be09d190a45116e95-0jh9Pg_fw658/format/webp'/>
+    </div>
+    <div class="imgzoom_pack" style="display: none;">
+        <div class="imgzoom_x">X</div>
+        <div class="imgzoom_img"><img class="pp" src=""></div>
+    </div>
+    </body>
+</html>
