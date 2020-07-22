@@ -201,7 +201,7 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
         });
     }
 
-    private void go2Fragment(String url, Bundle extras) {
+    public void go2Fragment(String url, Bundle extras) {
         List<Fragment> fragments = fragmentManager.getFragments();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         if (current != null) {

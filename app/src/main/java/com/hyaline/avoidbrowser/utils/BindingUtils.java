@@ -41,7 +41,7 @@ public class BindingUtils {
                     command.execute();
                 }
             }
-            return false;
+            return true;
         });
     }
 

@@ -62,10 +62,11 @@ public class SearchActivity extends BaseActivity<SearchViewModel, ActivitySearch
         Intent data = new Intent();
         String regex = "^([hH][tT]{2}[pP]:/*|[hH][tT]{2}[pP][sS]:/*|[fF][tT][pP]:/*)(([A-Za-z0-9-~]+).)+([A-Za-z0-9-~\\/])+(\\?{0,1}(([A-Za-z0-9-~]+\\={0,1})([A-Za-z0-9-~]*)\\&{0,1})*)$";
         Pattern pattern = Pattern.compile(regex);
-        if (pattern.matcher(keyword).matches()) {
+        /*if (pattern.matcher(keyword).matches()) {
             data.putExtra("type", 1);
             data.putExtra("url", keyword);
-        } else if (keyword.startsWith("www.") || keyword.startsWith("WWW.")) {
+        } else */
+        if (keyword.startsWith("www.") || keyword.startsWith("WWW.")) {
             keyword = "http://" + keyword;
             data.putExtra("type", 1);
             data.putExtra("url", keyword);

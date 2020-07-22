@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.hyaline.avoidbrowser.BR;
 import com.hyaline.avoidbrowser.R;
 import com.hyaline.avoidbrowser.base.BaseFragment;
@@ -18,13 +19,17 @@ import com.hyaline.avoidbrowser.data.AppDatabase;
 import com.hyaline.avoidbrowser.data.beans.BrowseHistoryBean;
 import com.hyaline.avoidbrowser.data.daos.BrowseHistoryDao;
 import com.hyaline.avoidbrowser.databinding.FragmentWebHuntBinding;
+import com.hyaline.avoidbrowser.ui.activities.main.MainActivity;
 import com.hyaline.avoidbrowser.ui.customviews.LoadingView;
 import com.hyaline.avoidbrowser.ui.customviews.NestedWebView;
+import com.hyaline.avoidbrowser.ui.fragments.webhunt.option.WebOptionPopup;
+import com.hyaline.avoidbrowser.utils.ClipboardUtils;
 import com.hyaline.avoidbrowser.utils.ThreadPool;
 import com.qmuiteam.qmui.util.QMUIDirection;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUIViewHelper;
 import com.tencent.smtt.export.external.extension.interfaces.IX5WebViewExtension;
+import com.tencent.smtt.sdk.URLUtil;
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebSettings;
 import com.tencent.smtt.sdk.WebView;
@@ -55,6 +60,12 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
             browseHistoryDao.update(exist);
         }
     };
+
+    private int px, py;
+
+    private WebOptionPopup popup;
+    private String[] urls = new String[]{"复制地址", "新页面打开"};
+    private String[] imgs = new String[]{"复制图片地址", "查看图片", "保存图片"};
 
     @Override
     protected int layoutId() {
@@ -142,6 +153,66 @@ public class WebHuntFragment extends BaseFragment<WebHuntViewModel, FragmentWebH
         webView = new NestedWebView(getActivity());
         ViewGroup.LayoutParams params = new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, loadlistner.getScrollHeight());
         dataBinding.base.addView(webView, 0, params);
+        webView.setOnLongClickListener(v -> {
+            WebView.HitTestResult result = webView.getHitTestResult();
+            if (result == null) {
+                return false;
+            }
+            switch (result.getType()) {
+                case WebView.HitTestResult.EDIT_TEXT_TYPE: // 选中的文字类型
+                case WebView.HitTestResult.PHONE_TYPE: // 处理拨号
+                case WebView.HitTestResult.EMAIL_TYPE: // 处理Email
+                case WebView.HitTestResult.GEO_TYPE: // 　地图类型
+                case WebView.HitTestResult.UNKNOWN_TYPE: //未知
+                    break;
+                case WebView.HitTestResult.SRC_ANCHOR_TYPE: // 超链接
+                    checkPopup();
+                    popup.setStrs(urls, result.getExtra()).showAtLocation(webView, px, py);
+                    return true;
+                case WebView.HitTestResult.SRC_IMAGE_ANCHOR_TYPE: // 带有链接的图片类型
+                case WebView.HitTestResult.IMAGE_TYPE: // 处理长按图片的菜单项
+                    String url = result.getExtra();
+                    Log.e("wwh", "WebHuntFragment --> initWebView: " + url);
+                    if (url != null && URLUtil.isValidUrl(url)) {
+                        checkPopup();
+                        popup.setStrs(imgs, result.getExtra()).showAtLocation(webView, px, py);
+                    }
+                    return true;
+            }
+            return false;
+        });
+        webView.setOnTouchListener((v, event) -> {
+            px = (int) event.getRawX();
+            py = (int) event.getRawY();
+            return false;
+        });
+    }
+
+    private void checkPopup() {
+        if (popup == null) {
+            popup = new WebOptionPopup(getContext())
+                    .listener((str, position, url) -> {
+                        popup.dismiss();
+                        switch (str) {
+                            case "复制地址":
+                                ClipboardUtils.copyText(url);
+                                ToastUtils.showShort("地址复制成功~");
+                                break;
+                            case "新页面打开":
+                                ((MainActivity) getActivity()).go2Fragment(url, null);
+                                break;
+                            case "复制图片地址":
+                                ClipboardUtils.copyText(url);
+                                ToastUtils.showShort("图片地址复制成功~");
+                                break;
+                            case "查看图片":
+                                break;
+                            case "保存图片":
+                                viewModel.saveImage(url);
+                                break;
+                        }
+                    });
+        }
     }
 
     private void initClient() {
