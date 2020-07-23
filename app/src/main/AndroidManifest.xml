@@ -40,7 +40,7 @@
             android:launchMode="singleTask" />
         <activity android:name=".ui.activities.history.HistoryActivity" />
         <activity android:name=".ui.activities.collections.CollectionsActivity" />
-        <activity android:name=".ui.activities.ImageViewActivity" />
+        <activity android:name=".ui.activities.imageviewer.ImageViewActivity" />
     </application>
 
 </manifest>

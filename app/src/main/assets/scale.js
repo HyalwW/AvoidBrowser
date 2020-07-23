@@ -165,15 +165,16 @@
             console.log(self.tapDefault)
 
             if (!self.finger && !self.tapDefault) {
-                var zoomMask = document.querySelector(".imgzoom_pack"),
-                    zoomImg = document.querySelector(".imgzoom_pack .imgzoom_img img");
-                zoomMask.style.cssText = "display:none";
-                zoomImg.src = "";
-                zoomImg.style.cssText = "";
-
-                self._destroy();
-
-                document.removeEventListener("touchmove", self.eventStop, false);
+//            点击图片不隐藏
+//                var zoomMask = document.querySelector(".imgzoom_pack"),
+//                    zoomImg = document.querySelector(".imgzoom_pack .imgzoom_img img");
+//                zoomMask.style.cssText = "display:none";
+//                zoomImg.src = "";
+//                zoomImg.style.cssText = "";
+//
+//                self._destroy();
+//
+//                document.removeEventListener("touchmove", self.eventStop, false);
                 return
             };
             self._changeData(); //重新计算数据

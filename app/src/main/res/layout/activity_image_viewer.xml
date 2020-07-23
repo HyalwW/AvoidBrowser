@@ -1,9 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/base"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/black">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-</LinearLayout>
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyaline.avoidbrowser.ui.activities.imageviewer.ImageViewModel" />
+
+        <import type="com.hyaline.avoidbrowser.R" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/base"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:orientation="vertical">
+
+        <com.qmuiteam.qmui.layout.QMUIConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/top_color"
+            app:hideAnim="@{R.anim.slide_down_out}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:showAnim="@{R.anim.slide_down_in}"
+            app:viewVisible="@{viewModel.showOption}">
+
+            <com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/qmui_icon_topbar_back"
+                app:clickCommand="@{viewModel.onBackClick}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="图片查看"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </com.qmuiteam.qmui.layout.QMUIConstraintLayout>
+
+        <com.qmuiteam.qmui.layout.QMUILinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bottom_color"
+            app:hideAnim="@{R.anim.slide_up_out}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:showAnim="@{R.anim.slide_up_in}"
+            app:viewVisible="@{viewModel.showOption}">
+
+            <com.qmuiteam.qmui.alpha.QMUIAlphaTextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/btn_press"
+                android:gravity="center"
+                android:text="本地保存"
+                android:textColor="@color/white"
+                android:textSize="18dp"
+                app:clickCommand="@{viewModel.onSaveClick}" />
+
+            <!--<View-->
+            <!--android:layout_width="1dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:background="@color/glass_gray" />-->
+
+            <!--<com.qmuiteam.qmui.alpha.QMUIAlphaTextView-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:gravity="center"-->
+            <!--android:text="图片分享"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="18dp"-->
+            <!--app:clickCommand="@{viewModel.onShareClick}" />-->
+        </com.qmuiteam.qmui.layout.QMUILinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

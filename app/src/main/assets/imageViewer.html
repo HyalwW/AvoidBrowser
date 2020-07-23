@@ -5,13 +5,13 @@
         <title>图片查看</title>
         <style type="text/css">
                 body {
-				background-color: #000000;
+				background-color: #FFFFFF;
                 }
                 .image {
                     position: absolute;
                     top:50%;
                     left:50%;
-                    width: 100%;
+                    width: 80%;
                     transform: translate(-50%,-50%);
                 }
                 .imgzoom_pack {
@@ -60,17 +60,20 @@
         <script>
             function showImage(src) {
                  $(".image").attr("src", src)
-                 alert(src)
             }
             $(function () {
                 $(".content img").on("click", function () {
                 $(".imgzoom_img>img").attr("src", $(this).attr("src"));
                 $(".imgzoom_img>img").css("marginTop", "-" + ($(this).height() / 2) + "px");
                 $(".imgzoom_pack").show();
+                $("body").css("background-color", "#000000");
+                window.Avoid.showOption(false);
             });
             $(".imgzoom_x").on("click", function () {
                 $(".imgzoom_pack").hide();
                 $(".imgzoom_img>img").attr("src", "");
+                $("body").css("background-color", "#FFFFFF");
+                window.Avoid.showOption(true);
             });
 
             window.ImagesZoom.init({
@@ -81,7 +84,7 @@
     </head>
     <body>
     <div class="content">
-        <img class="image" src='https://hbimg.huabanimg.com/357d23d074c2954d568d1a6f86a5be09d190a45116e95-0jh9Pg_fw658/format/webp'/>
+        <img class="image" />
     </div>
     <div class="imgzoom_pack" style="display: none;">
         <div class="imgzoom_x">X</div>
