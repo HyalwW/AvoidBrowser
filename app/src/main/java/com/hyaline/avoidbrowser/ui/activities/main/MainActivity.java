@@ -1,6 +1,8 @@
 package com.hyaline.avoidbrowser.ui.activities.main;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -13,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.hyaline.avoidbrowser.BR;
 import com.hyaline.avoidbrowser.R;
 import com.hyaline.avoidbrowser.base.BaseActivity;
@@ -23,6 +26,7 @@ import com.hyaline.avoidbrowser.databinding.ActivityMainBinding;
 import com.hyaline.avoidbrowser.ui.activities.history.HistoryActivity;
 import com.hyaline.avoidbrowser.ui.activities.search.SearchActivity;
 import com.hyaline.avoidbrowser.ui.activities.set.SettingActivity;
+import com.hyaline.avoidbrowser.ui.customviews.MenuView;
 import com.hyaline.avoidbrowser.ui.dialogs.CollectEditDialog;
 import com.hyaline.avoidbrowser.ui.dialogs.showStack.ShowStackDialog;
 import com.hyaline.avoidbrowser.ui.dialogs.showStack.ShowStackModel;
@@ -35,6 +39,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBinding> implements OnWebStuffListner, TextWatcher {
 
@@ -75,6 +80,15 @@ public class MainActivity extends BaseActivity<MainViewModel, ActivityMainBindin
         fragmentManager = getSupportFragmentManager();
         go2Fragment("https://www.baidu.com", null);
         initEvents();
+        String[] texts = new String[]{"历史", "书签", "下载", "夜间", "设置", "退出"};
+        Bitmap[] bitmaps = new Bitmap[]{cb(R.drawable.history), cb(R.drawable.add_to_star), cb(R.drawable.download), cb(R.drawable.mode_night), cb(R.drawable.set), cb(R.drawable.exit)};
+        for (int i = 0; i < texts.length; i++) {
+            dataBinding.menuView.addMenu(texts[i], bitmaps[i]);
+        }
+    }
+
+    private Bitmap cb(int icon) {
+        return BitmapFactory.decodeResource(getResources(), icon);
     }
 
     @Override
